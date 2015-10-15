@@ -13,8 +13,17 @@
     	<artifactId>javax.servlet-api</artifactId>
     	<version>3.1.0</version>
     </dependency>
+    <dependency>
+    	<groupId>org.json</groupId>
+    	<artifactId>json</artifactId>
+    	<version>20150729</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>news-agregator</finalName>
   </build>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
 </project>
