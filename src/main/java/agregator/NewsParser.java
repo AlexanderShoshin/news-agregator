@@ -3,13 +3,15 @@ package agregator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class NewsParser {
-    public List<NewsItem> parseNews(Document newsDocument) {
+    public List<NewsItem> parseFromXml(Document newsDocument) {
         List<NewsItem> news;
         NodeList nNews;
         NewsItem nItem;
@@ -51,5 +53,23 @@ public class NewsParser {
         } else {
             return null;
         }
+    }
+    
+    public String parseToJson(NewsItem newsItem) {
+        JSONObject item = new JSONObject();
+        JSONArray images = new JSONArray();
+                
+        item.put("title", newsItem.title);
+        item.put("author", newsItem.author);
+        item.put("category", newsItem.category);
+        item.put("description", newsItem.description);
+        item.put("source", newsItem.source);
+        item.put("publishedDate", newsItem.publishedDate);
+        for (int i = 0; i < newsItem.images.size(); i++) {
+            images.put(newsItem.images.get(i));
+        }
+        item.put("images", images);
+        
+        return item.toString();
     }
 }
