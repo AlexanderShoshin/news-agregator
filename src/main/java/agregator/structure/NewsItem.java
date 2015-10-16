@@ -1,8 +1,9 @@
-package agregator;
+package agregator.structure;
 
 import java.util.List;
 
 public class NewsItem {
+    public String id;
     public String category;
     public String title;
     public String description;
