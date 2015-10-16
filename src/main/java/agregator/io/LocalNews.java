@@ -1,4 +1,4 @@
-package agregator.parsers;
+package agregator.io;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -63,23 +61,5 @@ public class LocalNews {
         } else {
             return null;
         }
-    }
-    
-    public static String parseToJson(NewsItem newsItem) {
-        JSONObject item = new JSONObject();
-        JSONArray images = new JSONArray();
-                
-        item.put("title", newsItem.title);
-        item.put("author", newsItem.author);
-        item.put("category", newsItem.category);
-        item.put("description", newsItem.description);
-        item.put("source", newsItem.source);
-        item.put("publishedDate", newsItem.publishedDate);
-        for (int i = 0; i < newsItem.images.size(); i++) {
-            images.put(newsItem.images.get(i));
-        }
-        item.put("images", images);
-        
-        return item.toString();
     }
 }

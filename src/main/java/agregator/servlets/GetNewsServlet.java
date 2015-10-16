@@ -33,27 +33,3 @@ public class GetNewsServlet extends HttpServlet {
         }  
 	}
 }
-
-/*String json = "";
-int newsDoneCount;
-
-HttpSession session = request.getSession(true);
-if (session.isNew()) {
-    newsDoneCount = 0;
-} else {
-    newsDoneCount = (Integer)session.getAttribute("newsDoneCount");
-}
-session.setAttribute("newsDoneCount", ++newsDoneCount);
-
-String contextPath = request.getSession().getServletContext().getRealPath("/");
-try {
-    XMLLoader xmlLoader = new XMLLoader();
-    Document newsXml = xmlLoader.loadXML(contextPath + "data\\news.xml");
-    NewsParser newsParser = new NewsParser();
-    List<NewsItem> news = newsParser.parseFromXml(newsXml);
-    json = newsParser.parseToJson(news.get(newsDoneCount%news.size()));
-} catch (Exception e) {
-    response.getWriter().append("Server error");
-}
-
-response.getWriter().append(json);*/

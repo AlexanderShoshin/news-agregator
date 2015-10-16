@@ -1,24 +1,26 @@
 package agregator.core;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
-import agregator.parsers.ConfigParser;
-import agregator.parsers.LocalNews;
+import agregator.io.Config;
+import agregator.io.LocalNews;
+import agregator.orders.LinearOrderGenerator;
+import agregator.orders.OrderGenerator;
 import agregator.structure.NewsItem;
+import agregator.utils.NewsParser;
 
 public class NewsWire {
-    private List<String> newsSequense;
-    private int lastItem;
-    
-    public NewsWire() throws ParserConfigurationException {
-       
-    }
     
     public void createNewSequense(ServletContext context) throws SAXException, IOException, ParserConfigurationException {
         List<NewsItem> news;
@@ -27,8 +29,8 @@ public class NewsWire {
         news = getStoredNews(context);
         orderGenerator = selectOrderGenerator();
         
-        newsSequense = orderGenerator.generate(news);
-        lastItem = 0;
+        context.setAttribute("newsSequense", orderGenerator.generate(news));
+        context.setAttribute("itemsSentCount", 0);
     }
     
     private List<NewsItem> getStoredNews(ServletContext context)
@@ -37,7 +39,7 @@ public class NewsWire {
     }
     
     private OrderGenerator selectOrderGenerator() {
-        switch (ConfigParser.getStrategy()) {
+        switch (Config.getSlideStrategy()) {
         case LINEAR:
             return new LinearOrderGenerator();
         default:
@@ -45,16 +47,70 @@ public class NewsWire {
         }
     }
     
+    @SuppressWarnings("unchecked")
     public String getNextPack(ServletContext context) throws SAXException, IOException, ParserConfigurationException {
-        String newsPack;
+        JSONObject pack;
+        int itemsSentCount;
+        List<Integer> newsSequense;
         
-        /*for (int i = lastItem; i < newsSequense.size(); i++) {
-            
-        }*/
-        List<NewsItem> news;
-        news = getStoredNews(context);
+        itemsSentCount = (Integer)context.getAttribute("itemsSentCount");
+        newsSequense = (List<Integer>)context.getAttribute("newsSequense");
+        List<Integer> packSequense = getPackSequense(Config.getPackNewsCount(),
+                                                     itemsSentCount,
+                                                     newsSequense);
+        itemsSentCount += packSequense.size();
+        context.setAttribute("itemsSentCount", itemsSentCount);
         
-        newsPack = LocalNews.parseToJson(news.get(0));
+        pack = new JSONObject();
+        pack.put("order", getOrderPack(packSequense));
+        pack.put("delays", getDelaysPack(packSequense));
+        pack.put("news", getNewsPack(packSequense, getStoredNews(context)));
+        
+        return pack.toString();
+    }
+    
+    private List<Integer> getPackSequense(int packLength, int itemsSentCount, List<Integer> newsSequense) {
+        int sequenseIndex;
+        int newsItemId;
+        List<Integer> packSequense;
+        
+        packSequense = new ArrayList<Integer>();
+        for (int i = 0; i < packLength; i++) {
+            sequenseIndex = (itemsSentCount + i) % newsSequense.size();
+            newsItemId = newsSequense.get(sequenseIndex);
+            packSequense.add(newsItemId);
+        }
+        
+        return packSequense;
+    }
+    
+    private JSONArray getOrderPack(List<Integer> packSequense) {
+        JSONArray orderPack = new JSONArray(packSequense.toString());
+        return orderPack;
+    }
+    
+    private JSONArray getDelaysPack(List<Integer> packSequense) {
+        JSONArray delaysPack = new JSONArray();
+        int delay = Config.getDefaultSlideDelay();
+        
+        for (int i = 0; i < packSequense.size(); i++) {
+            delaysPack.put(delay);
+        }
+        return delaysPack;
+    }
+    
+    private JSONArray getNewsPack(List<Integer> packSequense, List<NewsItem> news)
+            throws SAXException, IOException, ParserConfigurationException {
+        JSONArray newsPack = new JSONArray();
+        Set<Integer> uniqueItems = new TreeSet<Integer>();
+        
+        for (Integer i: packSequense) {
+            uniqueItems.add(i);
+        }
+        
+        for (int i: uniqueItems) {
+            newsPack.put(NewsParser.parseToJson(news.get(i)));
+        }
         
         return newsPack;
     }
