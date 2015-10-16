@@ -1,4 +1,4 @@
-package agregator;
+package agregator.parsers;
 
 import java.io.File;
 import java.io.IOException;

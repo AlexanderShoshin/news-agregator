@@ -8,7 +8,7 @@
   	<servlet-name>GetNewsServlet</servlet-name>
   	<display-name>GetNewsServlet</display-name>
   	<description></description>
-  	<servlet-class>agregator.GetNewsServlet</servlet-class>
+  	<servlet-class>agregator.servlets.GetNewsServlet</servlet-class>
   </servlet>
   <servlet-mapping>
   	<servlet-name>GetNewsServlet</servlet-name>
