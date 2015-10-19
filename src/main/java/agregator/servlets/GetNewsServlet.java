@@ -27,9 +27,9 @@ public class GetNewsServlet extends HttpServlet {
 	        throws ServletException, IOException {
 	    ServletContext context = request.getSession().getServletContext();
 	    try {
-	        response.getWriter().append(newsWire.getNextPack(context));
+	        response.getWriter().write(newsWire.getNextPack(context));
 	    } catch (Exception e) {
-            response.getWriter().append("Server error");
+            response.getWriter().write("Server error");
         }  
 	}
 }
