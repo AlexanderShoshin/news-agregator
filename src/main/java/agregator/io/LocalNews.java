@@ -32,17 +32,16 @@ public class LocalNews {
         
         for (int i = 0; i < newsCnt; i++) {
             nItem = new NewsItem();
-            nItem.id = Integer.toString(i);
-            nItem.category = getChildValue(nNews.item(i), "category");
-            nItem.author = getChildValue(nNews.item(i), "author");
-            nItem.description = getChildValue(nNews.item(i), "description");
-            nItem.publishedDate = getChildValue(nNews.item(i), "publishedDate");
-            nItem.source = getChildValue(nNews.item(i), "source");
-            nItem.title = getChildValue(nNews.item(i), "title");
-            nItem.images = new ArrayList<String>();
+            nItem.setId(Integer.toString(i));
+            nItem.setCategory(getChildValue(nNews.item(i), "category"));
+            nItem.setAuthor(getChildValue(nNews.item(i), "author"));
+            nItem.setDescription(getChildValue(nNews.item(i), "description"));
+            nItem.setPublishedDate(getChildValue(nNews.item(i), "publishedDate"));
+            nItem.setSource(getChildValue(nNews.item(i), "source"));
+            nItem.setTitle(getChildValue(nNews.item(i), "title"));
             images = getChildNodes(getChildNodes(nNews.item(i), "images").item(0), "image");
             for (int j = 0; j < images.getLength(); j++) {
-                nItem.images.add(images.item(j).getTextContent());
+                nItem.addImage(images.item(j).getTextContent());
             }
             news.add(nItem);
         }

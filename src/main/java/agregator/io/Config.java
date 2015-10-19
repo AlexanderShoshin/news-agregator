@@ -1,16 +1,16 @@
 package agregator.io;
 
-import agregator.structure.SlideStrategys;
+import agregator.structure.SlideOrder;
 
 public class Config {
-    public static SlideStrategys getSlideStrategy() {
+    public static SlideOrder getSlideOrder() {
         // todo: read value from config file
-        return SlideStrategys.LINEAR;
+        return SlideOrder.LINEAR;
     }
     
     public static int getPackNewsCount() {
         // todo: read value from config file
-        return 3;
+        return 1;
     }
     
     public static int getDefaultSlideDelay() {

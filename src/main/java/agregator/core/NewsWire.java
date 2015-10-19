@@ -39,7 +39,7 @@ public class NewsWire {
     }
     
     private OrderGenerator selectOrderGenerator() {
-        switch (Config.getSlideStrategy()) {
+        switch (Config.getSlideOrder()) {
         case LINEAR:
             return new LinearOrderGenerator();
         default:
@@ -47,7 +47,6 @@ public class NewsWire {
         }
     }
     
-    @SuppressWarnings("unchecked")
     public String getNextPack(ServletContext context) throws SAXException, IOException, ParserConfigurationException {
         JSONObject pack;
         int itemsSentCount;
