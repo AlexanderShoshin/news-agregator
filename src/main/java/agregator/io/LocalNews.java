@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
@@ -15,14 +16,13 @@ import org.xml.sax.SAXException;
 import agregator.structure.NewsItem;
 
 public class LocalNews {
-    public static List<NewsItem> parse(String path, String file) throws ParserConfigurationException, SAXException, IOException {
+    public static List<NewsItem> parse(ServletContext context) throws ParserConfigurationException, SAXException, IOException {
         List<NewsItem> news;
         NodeList nNews;
         NewsItem nItem;
         int newsCnt;
-        
-        XMLLoader xmlLoader = new XMLLoader();
-        Document newsXml = xmlLoader.loadXML(path + "/" + file);
+        String path = Config.getLocalNewsLocation(context);
+        Document newsXml = getDoc(context);
         
         news = new ArrayList<NewsItem>();
         
@@ -47,6 +47,14 @@ public class LocalNews {
         return news;
     }
     
+    private static Document getDoc(ServletContext context) throws ParserConfigurationException, SAXException, IOException {
+        String path = Config.getLocalNewsLocation(context);
+        String file = Config.getLocalNewsDescriptor();
+        
+        XMLLoader xmlLoader = new XMLLoader();
+        return xmlLoader.loadXML(path + "/" + file);
+    }
+    
     private static String getChildValue(Node node, String childName) {
         return getChildNodes(node, childName).item(0).getTextContent();
     }
@@ -59,5 +67,9 @@ public class LocalNews {
         } else {
             return null;
         }
+    }
+    
+    public static void add(NewsItem item, ServletContext context) {
+        
     }
 }
