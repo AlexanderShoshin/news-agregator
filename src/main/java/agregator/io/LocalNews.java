@@ -39,7 +39,6 @@ public class LocalNews {
             nItem.source = getChildValue(nNews.item(i), "source");
             nItem.title = getChildValue(nNews.item(i), "title");
             nItem.images = new ArrayList<String>();
-            //nItem.images.add(getChildValue(nNews.item(i), "imagesFolder"));
             nItem.images = FileExtractor.extract(path + "/" + getChildValue(nNews.item(i), "imagesFolder"));
             news.add(nItem);
         }
