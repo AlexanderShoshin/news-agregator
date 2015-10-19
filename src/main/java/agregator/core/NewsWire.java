@@ -35,7 +35,7 @@ public class NewsWire {
     
     private List<NewsItem> getStoredNews(ServletContext context)
             throws SAXException, IOException, ParserConfigurationException {
-        return LocalNews.parse(Config.getLocalNewsLocation(context), Config.getLocalNewsDescriptor());
+        return LocalNews.parse(context);
     }
     
     private OrderGenerator selectOrderGenerator() {

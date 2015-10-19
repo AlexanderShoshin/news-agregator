@@ -13,8 +13,7 @@ private void addLocalNewsItem() {
 private String showCurrentNews(HttpServletRequest request) throws Exception {
     String newsLines = "";
 	ServletContext context = request.getSession().getServletContext();
-	List<NewsItem> news = LocalNews.parse(Config.getLocalNewsLocation(context), 
-	        							  Config.getLocalNewsDescriptor());
+	List<NewsItem> news = LocalNews.parse(context);
 	for (NewsItem item: news) {
 	    newsLines += newLine(item);
 	}
