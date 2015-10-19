@@ -10,8 +10,7 @@ public class LinearOrderGenerator implements OrderGenerator {
         List<Integer> order = new ArrayList<Integer>();
         
         for (NewsItem item: news) {
-            order.add(Integer.parseInt(item.id));
-            order.add(Integer.parseInt(item.id));
+            order.add(Integer.parseInt(item.getId()));
         }
         
         return order;

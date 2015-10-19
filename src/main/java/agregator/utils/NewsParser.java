@@ -10,14 +10,14 @@ public class NewsParser {
         JSONObject item = new JSONObject();
         JSONArray images = new JSONArray();
                 
-        item.put("title", newsItem.title);
-        item.put("author", newsItem.author);
-        item.put("category", newsItem.category);
-        item.put("description", newsItem.description);
-        item.put("source", newsItem.source);
-        item.put("publishedDate", newsItem.publishedDate);
-        for (int i = 0; i < newsItem.images.size(); i++) {
-            images.put(newsItem.images.get(i));
+        item.put("title", newsItem.getTitle());
+        item.put("author", newsItem.getAuthor());
+        item.put("category", newsItem.getCategory());
+        item.put("description", newsItem.getDescription());
+        item.put("source", newsItem.getSource());
+        item.put("publishedDate", newsItem.getPublishedDate());
+        for (int i = 0; i < newsItem.getImagesCount(); i++) {
+            images.put(newsItem.getImage(i));
         }
         item.put("images", images);
         

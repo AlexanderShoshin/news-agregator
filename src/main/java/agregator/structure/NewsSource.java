@@ -1,5 +1,5 @@
 package agregator.structure;
 
-public enum NewsSources {
+public enum NewsSource {
     LOCAL
 }
