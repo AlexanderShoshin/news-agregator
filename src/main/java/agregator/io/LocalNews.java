@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -73,7 +74,23 @@ public class LocalNews {
         }
     }
     
-    public static void add(NewsItem item, ServletContext context) {
+    public static void add(NewsItem item, ServletContext context) throws Exception {
+        Document newsXml = getDoc(context);
+        Element staff = newsXml.createElement("newsItem");
+        newsXml.getDocumentElement().appendChild(staff);
         
+        Element firstname = newsXml.createElement("category");
+        firstname.appendChild(newsXml.createTextNode("yong"));
+        staff.appendChild(firstname);
+        
+        saveDoc(newsXml, context);
+    }
+    
+    private static void saveDoc(Document xmlDoc, ServletContext context)
+            throws TransformerException, ParserConfigurationException {
+        String path = Config.getLocalNewsLocation(context);
+        String file = Config.getLocalNewsDescriptor();
+        XMLLoader xmlLoader = new XMLLoader();
+        xmlLoader.saveXML(xmlDoc, path + "/" + file);
     }
 }
