@@ -22,4 +22,9 @@ public class Config {
         // todo: read value from config file
         return context.getRealPath("/") + "data";
     }
+    
+    public static String getLocalNewsDescriptor() {
+        // todo: read value from config file
+        return "news.xml";
+    }
 }
