@@ -1,5 +1,6 @@
 package agregator.io;
 
+import javax.servlet.ServletContext;
 import agregator.structure.SlideOrder;
 
 public class Config {

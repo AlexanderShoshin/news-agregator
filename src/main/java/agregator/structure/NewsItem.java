@@ -8,6 +8,7 @@ public class NewsItem {
     private String category;
     private String title;
     private String description;
+    private String imagesFolder;
     private List<String> images;
     private String publishedDate;
     private String author;
@@ -67,5 +68,12 @@ public class NewsItem {
     }
     public void setSource(String source) {
         this.source = source;
+    }
+    public String getImagesFolder() {
+        return imagesFolder;
+    }
+
+    public void setImagesFolder(String imagesFolder) {
+        this.imagesFolder = imagesFolder;
     }
 }

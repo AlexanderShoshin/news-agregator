@@ -21,6 +21,7 @@ public class LocalNews {
         NodeList nNews;
         NewsItem nItem;
         int newsCnt;
+        List<String> images;
         String path = Config.getLocalNewsLocation(context);
         Document newsXml = getDoc(context);
         
@@ -38,10 +39,12 @@ public class LocalNews {
             nItem.setPublishedDate(getChildValue(nNews.item(i), "publishedDate"));
             nItem.setSource(getChildValue(nNews.item(i), "source"));
             nItem.setTitle(getChildValue(nNews.item(i), "title"));
-            images = getChildNodes(getChildNodes(nNews.item(i), "images").item(0), "image");
-            for (int j = 0; j < images.getLength(); j++) {
-                nItem.addImage(images.item(j).getTextContent());
+            nItem.setImagesFolder(getChildValue(nNews.item(i), "imagesFolder"));
+            images = FileExtractor.extract(path + "/" + nItem.getImagesFolder());
+            for (int j = 0; j < images.size(); j++) {
+                nItem.addImage(images.get(j));
             }
+
             news.add(nItem);
         }
         return news;
