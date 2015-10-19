@@ -15,15 +15,14 @@ import org.xml.sax.SAXException;
 import agregator.structure.NewsItem;
 
 public class LocalNews {
-    public static List<NewsItem> parse(String path) throws ParserConfigurationException, SAXException, IOException {
+    public static List<NewsItem> parse(String path, String file) throws ParserConfigurationException, SAXException, IOException {
         List<NewsItem> news;
         NodeList nNews;
         NewsItem nItem;
-        NodeList images;
         int newsCnt;
         
         XMLLoader xmlLoader = new XMLLoader();
-        Document newsXml = xmlLoader.loadXML(path);
+        Document newsXml = xmlLoader.loadXML(path + "/" + file);
         
         news = new ArrayList<NewsItem>();
         

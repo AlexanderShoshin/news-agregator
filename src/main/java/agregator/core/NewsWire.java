@@ -35,7 +35,7 @@ public class NewsWire {
     
     private List<NewsItem> getStoredNews(ServletContext context)
             throws SAXException, IOException, ParserConfigurationException {
-        return LocalNews.parse(context.getRealPath("/") + "data\\news.xml");
+        return LocalNews.parse(context.getRealPath("/") + "data", "news.xml");
     }
     
     private OrderGenerator selectOrderGenerator() {

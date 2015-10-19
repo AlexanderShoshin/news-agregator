@@ -4,9 +4,7 @@
 		<category>career</category>
 	    <title>title_1</title>
 	    <description>description_1</description>
-	    <images>
-	    	<image>img_1.png</image>
-	    </images>
+	    <imagesFolder>images_folder_1</imagesFolder>
 	    <publishedDate>date_1</publishedDate>
 		<author>author_1</author>
 	    <fullVersionLink>link_1</fullVersionLink>
@@ -17,11 +15,7 @@
 		<category>career</category>
 	    <title>title_2</title>
 	    <description>description_2</description>
-	    <images>
-	    	<image>img_4.png</image>
-	    	<image>img_2.png</image>
-	    	<image>img_3.png</image>
-	    </images>
+	    <imagesFolder>images_folder_2</imagesFolder>
 	    <publishedDate>date_2</publishedDate>
 		<author>author_2</author>
 	    <fullVersionLink>link_2</fullVersionLink>
@@ -32,10 +26,7 @@
 		<category>career</category>
 	    <title>title_3</title>
 	    <description>description_3</description>
-	    <images>
-	    	<image>img_14.png</image>
-	    	<image>img_42.png</image>
-	    </images>
+	    <imagesFolder>images_folder_3</imagesFolder>
 	    <publishedDate>date_3</publishedDate>
 		<author>author_3</author>
 	    <fullVersionLink>link_3</fullVersionLink>
