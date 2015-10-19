@@ -7,6 +7,7 @@ public class NewsItem {
     public String category;
     public String title;
     public String description;
+    public String imagesFolder;
     public List<String> images;
     public String publishedDate;
     public String author;
