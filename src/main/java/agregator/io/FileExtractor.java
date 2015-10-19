@@ -11,7 +11,7 @@ public class FileExtractor {
         List<String> fileNames = new ArrayList<String>();
         
         for (File file: files) {
-            fileNames.add(file.getAbsolutePath());
+            fileNames.add(file.getName());
         }
         
         return fileNames;
