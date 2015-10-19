@@ -21,6 +21,7 @@ public class LocalNews {
         NodeList nNews;
         NewsItem nItem;
         int newsCnt;
+        List<String> images;
         String path = Config.getLocalNewsLocation(context);
         Document newsXml = getDoc(context);
         
@@ -31,16 +32,20 @@ public class LocalNews {
         
         for (int i = 0; i < newsCnt; i++) {
             nItem = new NewsItem();
-            nItem.id = Integer.toString(i);
-            nItem.category = getChildValue(nNews.item(i), "category");
-            nItem.author = getChildValue(nNews.item(i), "author");
-            nItem.description = getChildValue(nNews.item(i), "description");
-            nItem.publishedDate = getChildValue(nNews.item(i), "publishedDate");
-            nItem.source = getChildValue(nNews.item(i), "source");
-            nItem.title = getChildValue(nNews.item(i), "title");
-            nItem.imagesFolder = getChildValue(nNews.item(i), "imagesFolder");
-            nItem.images = new ArrayList<String>();
-            nItem.images = FileExtractor.extract(path + "/" + nItem.imagesFolder);
+            nItem.setId(Integer.toString(i));
+            nItem.setCategory(getChildValue(nNews.item(i), "category"));
+            nItem.setAuthor(getChildValue(nNews.item(i), "author"));
+            nItem.setDescription(getChildValue(nNews.item(i), "description"));
+            nItem.setPublishedDate(getChildValue(nNews.item(i), "publishedDate"));
+            nItem.setSource(getChildValue(nNews.item(i), "source"));
+            nItem.setTitle(getChildValue(nNews.item(i), "title"));
+            nItem.setImagesFolder(getChildValue(nNews.item(i), "imagesFolder"));
+            
+            images = FileExtractor.extract(path + "/" + nItem.getImagesFolder());
+            for (int j = 0; j < images.size(); j++) {
+                nItem.addImage(images.get(j));
+            }
+
             news.add(nItem);
         }
         return news;

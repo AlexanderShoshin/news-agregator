@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import agregator.core.NewsWire;
 
 public class GetNewsServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private NewsWire newsWire;
+    private static final long serialVersionUID = 1L;
+    private NewsWire newsWire;
     
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -31,5 +31,5 @@ public class GetNewsServlet extends HttpServlet {
 	    } catch (Exception e) {
             response.getWriter().write("Server error");
         }  
-	}
+    }
 }
