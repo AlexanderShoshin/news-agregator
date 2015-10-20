@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsItem {
-    private String id;
-    private String category;
-    private String title;
-    private String description;
+    private String id = "";
+    private String category = "";
+    private String title = "";
+    private String description = "";
+    private String imagesFolder = "";
     private List<String> images;
-    private String publishedDate;
-    private String author;
-    private String source;
+    private String publishedDate = "";
+    private String author = "";
+    private String source = "";
     
     public NewsItem() {
         images = new ArrayList<String>();
@@ -67,5 +68,12 @@ public class NewsItem {
     }
     public void setSource(String source) {
         this.source = source;
+    }
+    public String getImagesFolder() {
+        return imagesFolder;
+    }
+
+    public void setImagesFolder(String imagesFolder) {
+        this.imagesFolder = imagesFolder;
     }
 }

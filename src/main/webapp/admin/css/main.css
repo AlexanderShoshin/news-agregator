@@ -1,0 +1,25 @@
+h1 {
+    font-size: 1em;
+}
+
+div {
+    display: inline-block;
+}
+
+div.table {
+    float: left;
+    margin: 0 30px;
+}
+
+h2 {
+    font-size: 1em;
+    margin: 10px;
+}
+
+table.news {
+    border-collapse: collapse;
+}
+
+table.news td, table.news th {
+    border: 1px solid;
+}

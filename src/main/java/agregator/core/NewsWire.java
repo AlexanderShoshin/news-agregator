@@ -35,7 +35,7 @@ public class NewsWire {
     
     private List<NewsItem> getStoredNews(ServletContext context)
             throws SAXException, IOException, ParserConfigurationException {
-        return LocalNews.parse(context.getRealPath("/") + "data\\news.xml");
+        return LocalNews.parse(context);
     }
     
     private OrderGenerator selectOrderGenerator() {
@@ -63,7 +63,7 @@ public class NewsWire {
         pack = new JSONObject();
         pack.put("order", getOrderPack(packSequense));
         pack.put("delays", getDelaysPack(packSequense));
-        pack.put("news", getNewsPack(packSequense, getStoredNews(context)));
+        pack.put("news", getNewsPack(packSequense, context));
         
         return pack.toString();
     }
@@ -98,8 +98,9 @@ public class NewsWire {
         return delaysPack;
     }
     
-    private JSONArray getNewsPack(List<Integer> packSequense, List<NewsItem> news)
+    private JSONArray getNewsPack(List<Integer> packSequense, ServletContext context)
             throws SAXException, IOException, ParserConfigurationException {
+        List<NewsItem> news = getStoredNews(context);
         JSONArray newsPack = new JSONArray();
         Set<Integer> uniqueItems = new TreeSet<Integer>();
         
@@ -108,7 +109,7 @@ public class NewsWire {
         }
         
         for (int i: uniqueItems) {
-            newsPack.put(NewsParser.parseToJson(news.get(i)));
+            newsPack.put(NewsParser.parseToJson(news.get(i), Config.getLocalNewsLocation(context)));
         }
         
         return newsPack;
