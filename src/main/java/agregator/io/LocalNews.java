@@ -61,7 +61,11 @@ public class LocalNews {
     }
     
     private static String getChildValue(Node node, String childName) {
-        return getChildNodes(node, childName).item(0).getTextContent();
+        try {
+            return getChildNodes(node, childName).item(0).getTextContent();
+        } catch (RuntimeException exc) {
+            return "";
+        }
     }
     
     private static NodeList getChildNodes(Node node, String childName) {
@@ -76,14 +80,25 @@ public class LocalNews {
     
     public static void add(NewsItem item, ServletContext context) throws Exception {
         Document newsXml = getDoc(context);
-        Element staff = newsXml.createElement("newsItem");
-        newsXml.getDocumentElement().appendChild(staff);
         
-        Element firstname = newsXml.createElement("category");
-        firstname.appendChild(newsXml.createTextNode("yong"));
-        staff.appendChild(firstname);
+        Element newsItem = newsXml.createElement("newsItem");
+        newsXml.getDocumentElement().appendChild(newsItem);
+        
+        newsItem.appendChild(createElement(newsXml, "category", item.getCategory()));
+        newsItem.appendChild(createElement(newsXml, "title", item.getTitle()));
+        newsItem.appendChild(createElement(newsXml, "description", item.getDescription()));
+        newsItem.appendChild(createElement(newsXml, "imagesFolder", item.getImagesFolder()));
+        newsItem.appendChild(createElement(newsXml, "publishedDate", item.getPublishedDate()));
+        newsItem.appendChild(createElement(newsXml, "author", item.getAuthor()));
+        newsItem.appendChild(createElement(newsXml, "source", item.getSource()));
         
         saveDoc(newsXml, context);
+    }
+    
+    private static Element createElement(Document doc, String tagName, String value) {
+        Element elem = doc.createElement(tagName);
+        elem.appendChild(doc.createTextNode(value));
+        return elem;
     }
     
     private static void saveDoc(Document xmlDoc, ServletContext context)
