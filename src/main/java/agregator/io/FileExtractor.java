@@ -7,6 +7,7 @@ import java.util.List;
 public class FileExtractor {
     public static List<String> extract(String folderPath) {
         File targetFolder = new File(folderPath);
+        targetFolder.mkdirs();
         File[] files = targetFolder.listFiles();
         List<String> fileNames = new ArrayList<String>();
         

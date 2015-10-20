@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsItem {
-    private String id;
-    private String category;
-    private String title;
-    private String description;
-    private String imagesFolder;
+    private String id = "";
+    private String category = "";
+    private String title = "";
+    private String description = "";
+    private String imagesFolder = "";
     private List<String> images;
-    private String publishedDate;
-    private String author;
-    private String source;
+    private String publishedDate = "";
+    private String author = "";
+    private String source = "";
     
     public NewsItem() {
         images = new ArrayList<String>();

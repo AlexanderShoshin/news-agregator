@@ -1,4 +1,5 @@
-<%@ include file="script.jsp" %>
+<%@ include file="add-news-item.jsp" %>
+<%@ include file="show-news.jsp" %>
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/main.css">
@@ -10,7 +11,7 @@
 				<th>Title</th>
 				<th>Images folder</th>
 			</tr>
-			<%= showCurrentNews(request) %>
+			<%= showCurrentNews(request.getSession().getServletContext()) %>
 		</table>
 		
 		<h2>Add new:</h2>
