@@ -34,7 +34,6 @@ public class CategoryFilter implements Filter {
 	    } else {
 	        return output;
 	    }
-	    
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {
