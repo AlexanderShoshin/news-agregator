@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import agregator.io.Config;
+import agregator.io.EmptyParamException;
 import agregator.structure.NewsItem;
 
 public class NewsParser {
@@ -84,5 +85,45 @@ public class NewsParser {
         item.put("images", images);
         
         return item;
+    }
+    
+    public static String getHtmlTable(List<NewsItem> news) {
+        String newsLines = "";
+        
+        for (NewsItem item: news) {
+            newsLines += getHtmlLine(item);
+        }
+        
+        return newsLines;
+    }
+
+    private static String getHtmlLine(NewsItem item) {    
+        String line = "";
+        
+        line += "<tr>";
+        line += getHtmlCell(item.getTitle());
+        line += getHtmlCell(item.getImagesFolder());
+        line += "</tr>";
+        
+        return line;
+    }
+
+    private static String getHtmlCell(String value) {
+        return "<td>" + value + "</td>";
+    }
+    
+    public static NewsItem getNewsItem(Map<String, String[]> params) throws EmptyParamException {
+        NewsItem newItem = new NewsItem();
+        newItem.setTitle(getParam(params, "title"));
+        newItem.setImagesFolder(getParam(params, "imagesFolder"));
+        return newItem;
+    }
+    
+    private static String getParam(Map<String, String[]> params, String paramName) throws EmptyParamException {
+        if (params.containsKey(paramName) && params.get(paramName)[0] != "") {
+            return params.get(paramName)[0];
+        } else {
+            throw new EmptyParamException();
+        }
     }
 }

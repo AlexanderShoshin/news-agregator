@@ -10,13 +10,12 @@ import agregator.utils.NewsParser;
 
 public class NewsWire {
     public String getNextPack(StateStorage stateStorage, NewsStorage newsStorage) throws Exception {
-        Slider slider;
+        Slider newsSelector;
         List<NewsItem> newsPack;
         String jsonNewsPack;
         
-        slider = selectSlider();
-        newsPack =  slider.getNextSlides(stateStorage, newsStorage);
-        
+        newsSelector = selectSlider();
+        newsPack =  newsSelector.getNextSlides(stateStorage, newsStorage);
         jsonNewsPack = NewsParser.getJsonPack(newsPack);
         
         return jsonNewsPack;
