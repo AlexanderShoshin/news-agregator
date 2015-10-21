@@ -4,27 +4,4 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  <filter>
-  	<filter-name>CategoryFilter</filter-name>
-  	<display-name>CategoryFilter</display-name>
-  	<description></description>
-  	<filter-class>agregator.filters.CategoryFilter</filter-class>
-  </filter>
-  <filter-mapping>
-  	<filter-name>CategoryFilter</filter-name>
-  	<url-pattern>/CategoryFilter</url-pattern>
-  </filter-mapping>
-  <listener>
-  	<listener-class>agregator.listeners.Logger</listener-class>
-  </listener>
-  <servlet>
-  	<servlet-name>GetNewsServlet</servlet-name>
-  	<display-name>GetNewsServlet</display-name>
-  	<description></description>
-  	<servlet-class>agregator.servlets.GetNewsServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>GetNewsServlet</servlet-name>
-  	<url-pattern>/GetNewsServlet</url-pattern>
-  </servlet-mapping>
 </web-app>
