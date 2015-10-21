@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -16,15 +15,20 @@ import org.xml.sax.SAXException;
 
 import agregator.structure.NewsItem;
 
-public class LocalNews {
-    public static List<NewsItem> parse(ServletContext context) throws ParserConfigurationException, SAXException, IOException {
+public class FileNewsStorage implements NewsStorage {
+    private String path;
+    
+    public FileNewsStorage(String path) {
+        this.path = path;
+    }
+    
+    public List<NewsItem> parse() throws ParserConfigurationException, SAXException, IOException {
         List<NewsItem> news;
         NodeList nNews;
         NewsItem nItem;
         int newsCnt;
         List<String> images;
-        String path = Config.getLocalNewsLocation(context);
-        Document newsXml = getDoc(context);
+        Document newsXml = getDoc();
         
         news = new ArrayList<NewsItem>();
         
@@ -51,15 +55,14 @@ public class LocalNews {
         return news;
     }
     
-    private static Document getDoc(ServletContext context) throws ParserConfigurationException, SAXException, IOException {
-        String path = Config.getLocalNewsLocation(context);
+    private Document getDoc() throws ParserConfigurationException, SAXException, IOException {
         String file = Config.getLocalNewsDescriptor();
         
         XMLLoader xmlLoader = new XMLLoader();
         return xmlLoader.loadXML(path + "/" + file);
     }
     
-    private static String getChildValue(Node node, String childName) {
+    private String getChildValue(Node node, String childName) {
         try {
             return getChildNodes(node, childName).item(0).getTextContent();
         } catch (RuntimeException exc) {
@@ -67,7 +70,7 @@ public class LocalNews {
         }
     }
     
-    private static NodeList getChildNodes(Node node, String childName) {
+    private NodeList getChildNodes(Node node, String childName) {
         Element element;
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             element = (Element) node;
@@ -77,8 +80,8 @@ public class LocalNews {
         }
     }
     
-    public static void add(NewsItem item, ServletContext context) throws Exception {
-        Document newsXml = getDoc(context);
+    public void add(NewsItem item) throws Exception {
+        Document newsXml = getDoc();
         
         Element newsItem = newsXml.createElement("newsItem");
         newsXml.getDocumentElement().appendChild(newsItem);
@@ -91,18 +94,17 @@ public class LocalNews {
         newsItem.appendChild(createElement(newsXml, "author", item.getAuthor()));
         newsItem.appendChild(createElement(newsXml, "source", item.getSource()));
         
-        saveDoc(newsXml, context);
+        saveDoc(newsXml);
     }
     
-    private static Element createElement(Document doc, String tagName, String value) {
+    private Element createElement(Document doc, String tagName, String value) {
         Element elem = doc.createElement(tagName);
         elem.appendChild(doc.createTextNode(value));
         return elem;
     }
     
-    private static void saveDoc(Document xmlDoc, ServletContext context)
+    private void saveDoc(Document xmlDoc)
             throws TransformerException, ParserConfigurationException {
-        String path = Config.getLocalNewsLocation(context);
         String file = Config.getLocalNewsDescriptor();
         XMLLoader xmlLoader = new XMLLoader();
         xmlLoader.saveXML(xmlDoc, path + "/" + file);

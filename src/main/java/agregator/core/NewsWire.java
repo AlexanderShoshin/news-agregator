@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONArray;
@@ -14,7 +13,8 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import agregator.io.Config;
-import agregator.io.LocalNews;
+import agregator.io.NewsStorage;
+import agregator.io.StateStorage;
 import agregator.orders.LinearOrderGenerator;
 import agregator.orders.OrderGenerator;
 import agregator.structure.NewsItem;
@@ -22,20 +22,15 @@ import agregator.utils.NewsParser;
 
 public class NewsWire {
     
-    public void createNewSequense(ServletContext context) throws SAXException, IOException, ParserConfigurationException {
+    public void createNewSequense(StateStorage stateStorage, NewsStorage localNews) throws SAXException, IOException, ParserConfigurationException {
         List<NewsItem> news;
         OrderGenerator orderGenerator;
         
-        news = getStoredNews(context);
+        news = localNews.parse();
         orderGenerator = selectOrderGenerator();
         
-        context.setAttribute("newsSequense", orderGenerator.generate(news));
-        context.setAttribute("itemsSentCount", 0);
-    }
-    
-    private List<NewsItem> getStoredNews(ServletContext context)
-            throws SAXException, IOException, ParserConfigurationException {
-        return LocalNews.parse(context);
+        stateStorage.setNewsSequense(orderGenerator.generate(news));
+        stateStorage.setItemsSent(0);
     }
     
     private OrderGenerator selectOrderGenerator() {
@@ -47,23 +42,24 @@ public class NewsWire {
         }
     }
     
-    public String getNextPack(ServletContext context) throws SAXException, IOException, ParserConfigurationException {
+    public String getNextPack(StateStorage stateStorage, NewsStorage newsStorage) throws SAXException, IOException, ParserConfigurationException {
         JSONObject pack;
         int itemsSentCount;
         List<Integer> newsSequense;
         
-        itemsSentCount = (Integer)context.getAttribute("itemsSentCount");
-        newsSequense = (List<Integer>)context.getAttribute("newsSequense");
+        itemsSentCount = stateStorage.getItemsSent();
+        newsSequense = stateStorage.getNewsSequense();
+        
         List<Integer> packSequense = getPackSequense(Config.getPackNewsCount(),
                                                      itemsSentCount,
                                                      newsSequense);
         itemsSentCount += packSequense.size();
-        context.setAttribute("itemsSentCount", itemsSentCount);
+        stateStorage.setItemsSent(itemsSentCount);
         
         pack = new JSONObject();
         pack.put("order", getOrderPack(packSequense));
         pack.put("delays", getDelaysPack(packSequense));
-        pack.put("news", getNewsPack(packSequense, context));
+        pack.put("news", getNewsPack(packSequense, newsStorage));
         
         return pack.toString();
     }
@@ -98,9 +94,9 @@ public class NewsWire {
         return delaysPack;
     }
     
-    private JSONArray getNewsPack(List<Integer> packSequense, ServletContext context)
+    private JSONArray getNewsPack(List<Integer> packSequense, NewsStorage newsStorage)
             throws SAXException, IOException, ParserConfigurationException {
-        List<NewsItem> news = getStoredNews(context);
+        List<NewsItem> news = newsStorage.parse();
         JSONArray newsPack = new JSONArray();
         Set<Integer> uniqueItems = new TreeSet<Integer>();
         
@@ -109,7 +105,7 @@ public class NewsWire {
         }
         
         for (int i: uniqueItems) {
-            newsPack.put(NewsParser.parseToJson(news.get(i), Config.getLocalNewsLocation(context)));
+            newsPack.put(NewsParser.parseToJson(news.get(i)));
         }
         
         return newsPack;

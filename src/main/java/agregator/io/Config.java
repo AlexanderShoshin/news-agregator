@@ -1,6 +1,5 @@
 package agregator.io;
 
-import javax.servlet.ServletContext;
 import agregator.structure.SlideOrder;
 
 public class Config {
@@ -17,11 +16,6 @@ public class Config {
     public static int getDefaultSlideDelay() {
         // todo: read value from config file
         return 2000;
-    }
-    
-    public static String getLocalNewsLocation(ServletContext context) {
-        // todo: read value from config file
-        return context.getRealPath("/") + "data";
     }
     
     public static String getLocalNewsDescriptor() {

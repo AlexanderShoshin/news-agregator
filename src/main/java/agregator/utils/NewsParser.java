@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import agregator.structure.NewsItem;
 
 public class NewsParser {
-    public static JSONObject parseToJson(NewsItem newsItem, String newsLocation) {
+    public static JSONObject parseToJson(NewsItem newsItem) {
         JSONObject item = new JSONObject();
         JSONArray images = new JSONArray();
 
@@ -18,7 +18,7 @@ public class NewsParser {
         item.put("publishedDate", newsItem.getPublishedDate());
 
         for (int i = 0; i < newsItem.getImagesCount(); i++) {
-            images.put(newsLocation + "/" + newsItem.getImagesFolder() + "/" + newsItem.getImage(i));
+            images.put(newsItem.getImagesFolder() + "/" + newsItem.getImage(i));
 
         }
         item.put("images", images);
