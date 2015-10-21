@@ -10,14 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 public class ReadableResponseWrapper extends HttpServletResponseWrapper {
-    private ByteArrayOutputStream outputStream;
     private String responseStr;
-
 
     public ReadableResponseWrapper(HttpServletResponse response) {
         super(response);
         responseStr = "";
-        outputStream = new ByteArrayOutputStream();
     }
 
     @Override
@@ -29,7 +26,8 @@ public class ReadableResponseWrapper extends HttpServletResponseWrapper {
     public ServletOutputStream getOutputStream() throws IOException {
         return new ServletOutputStream() {
             private WriteListener writeListener = null;
-
+            private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            
             @Override
             public void write(int b) throws IOException {
                 responseStr += (char)b;
