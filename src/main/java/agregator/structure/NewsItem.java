@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsItem {
-    private String id = "";
+    private int id = 0;
     private String category = "";
     private String title = "";
     private String description = "";
@@ -18,10 +18,10 @@ public class NewsItem {
         images = new ArrayList<String>();
     }
     
-    public String getId() {
+    public int getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
     public String getCategory() {

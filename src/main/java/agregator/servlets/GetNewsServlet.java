@@ -26,16 +26,15 @@ public class GetNewsServlet extends HttpServlet {
             stateStorage = new ContextStateStorage(config.getServletContext());
             newsStorage = new FileNewsStorage(config.getServletContext().getRealPath("/") + "data");
             newsWire = new NewsWire();
-            newsWire.createNewSequense(stateStorage, newsStorage);
         } catch (Exception ignored) {}
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            response.getWriter().append(newsWire.getNextPack(stateStorage, newsStorage));
+            response.getOutputStream().write(newsWire.getNextPack(stateStorage, newsStorage).getBytes());
         } catch (Exception e) {
-            response.getWriter().append("Server error");
+            response.getOutputStream().write("Server error".getBytes());
         }  
     }
 }

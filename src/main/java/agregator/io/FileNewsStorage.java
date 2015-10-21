@@ -37,7 +37,7 @@ public class FileNewsStorage implements NewsStorage {
         
         for (int i = 0; i < newsCnt; i++) {
             nItem = new NewsItem();
-            nItem.setId(Integer.toString(i));
+            nItem.setId(i);
             nItem.setCategory(getChildValue(nNews.item(i), "category"));
             nItem.setAuthor(getChildValue(nNews.item(i), "author"));
             nItem.setDescription(getChildValue(nNews.item(i), "description"));

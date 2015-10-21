@@ -1,5 +1,5 @@
 package agregator.structure;
 
-public enum SlideOrder {
+public enum SlideStrategy {
     LINEAR
 }
