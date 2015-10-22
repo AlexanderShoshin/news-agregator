@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import agregator.core.NewsWire;
 import agregator.core.StoragesKeeper;
-import agregator.io.FileNewsStorage;
 import agregator.io.NewsStorage;
 import agregator.io.StateStorage;
 
