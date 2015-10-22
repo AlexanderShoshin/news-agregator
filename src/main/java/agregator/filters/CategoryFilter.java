@@ -13,7 +13,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
-import agregator.utils.NewsFilter;
+import agregator.utils.NewsProcessor;
 
 @WebFilter("/GetNewsServlet")
 public class CategoryFilter implements Filter {
@@ -27,13 +27,9 @@ public class CategoryFilter implements Filter {
 	    out.write(filterOutput(request.getServletContext(), wrapper.getData()).getBytes());
 	    out.close();
 	}
-	
+	// todo: add "switch on/off" filter to admin page 
 	private String filterOutput(ServletContext context, String output) {
-	    if (context.getAttribute("CatFilter") != null) {
-	        return NewsFilter.filterByField(output, "category", "career");
-	    } else {
-	        return output;
-	    }
+	    return NewsProcessor.filterByField(output, "category", "career");
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {
