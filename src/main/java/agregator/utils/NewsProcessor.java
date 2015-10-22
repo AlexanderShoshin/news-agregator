@@ -6,7 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class NewsFilter {
+public class NewsProcessor {
     public static String filterByField(String jsonNewsPack, String fieldName, String fieldValue) {
         JSONObject newsPack = new JSONObject(jsonNewsPack);
         JSONArray order = (JSONArray)newsPack.get("order");
