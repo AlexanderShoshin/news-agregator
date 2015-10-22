@@ -5,12 +5,14 @@ import java.io.IOException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import agregator.core.NewsWire;
 
+@WebServlet("/GetNewsServlet")
 public class GetNewsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private NewsWire newsWire;
@@ -27,9 +29,9 @@ public class GetNewsServlet extends HttpServlet {
             throws ServletException, IOException {
         ServletContext context = request.getSession().getServletContext();
         try {
-            response.getWriter().append(newsWire.getNextPack(context));
+            response.getOutputStream().write(newsWire.getNextPack(context).getBytes());
         } catch (Exception e) {
-            response.getWriter().append("Server error");
+            response.getOutputStream().write("Server error".getBytes());
         }  
     }
 }
