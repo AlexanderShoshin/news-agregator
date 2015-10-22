@@ -23,15 +23,13 @@ public class GetNewsServlet extends HttpServlet {
     
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        try {
-            stateStorage = StoragesKeeper.getStateStorage(config.getServletContext());
-            newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
-            newsWire = new NewsWire();
-        } catch (Exception ignored) {}
+        
+        stateStorage = StoragesKeeper.getStateStorage(config.getServletContext());
+        newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
+        newsWire = new NewsWire();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             response.getOutputStream().write(newsWire.getNextPack(stateStorage, newsStorage).getBytes());
         } catch (Exception e) {

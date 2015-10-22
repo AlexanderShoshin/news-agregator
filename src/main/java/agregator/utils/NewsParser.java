@@ -104,11 +104,15 @@ public class NewsParser {
         return "<td>" + value + "</td>";
     }
     
-    public static NewsItem getNewsItem(Map<String, String[]> params) throws EmptyParamException {
+    public static NewsItem getNewsItem(Map<String, String[]> params) {
         NewsItem newItem = new NewsItem();
-        newItem.setTitle(getParam(params, "title"));
-        newItem.setImagesFolder(getParam(params, "imagesFolder"));
-        return newItem;
+        try {
+            newItem.setTitle(getParam(params, "title"));
+            newItem.setImagesFolder(getParam(params, "imagesFolder"));
+            return newItem;
+        } catch (EmptyParamException e) {
+            return null;
+        }
     }
     
     private static String getParam(Map<String, String[]> params, String paramName) throws EmptyParamException {
