@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import agregator.core.NewsWire;
-import agregator.io.ContextStateStorage;
+import agregator.core.StoragesKeeper;
 import agregator.io.FileNewsStorage;
 import agregator.io.NewsStorage;
 import agregator.io.StateStorage;
@@ -23,8 +23,8 @@ public class GetNewsServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         try {
-            stateStorage = new ContextStateStorage(config.getServletContext());
-            newsStorage = new FileNewsStorage(config.getServletContext().getRealPath("/") + "data");
+            stateStorage = StoragesKeeper.getStateStorage(config.getServletContext());
+            newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
             newsWire = new NewsWire();
         } catch (Exception ignored) {}
     }

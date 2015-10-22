@@ -1,8 +1,7 @@
 <%@ page import="agregator.core.NewsAdmin,
                  agregator.io.NewsStorage,
-                 agregator.io.FileNewsStorage,
                  agregator.io.StateStorage,
-                 agregator.io.ContextStateStorage"
+                 agregator.core.StoragesKeeper"
 %>
 <%!
 private NewsAdmin newsAdmin;
@@ -11,8 +10,8 @@ private StateStorage stateStorage;
 %>
 <%
 newsAdmin = new NewsAdmin();
-stateStorage = new ContextStateStorage(config.getServletContext());
-newsStorage = new FileNewsStorage(config.getServletContext().getRealPath("/") + "data");
+stateStorage = StoragesKeeper.getStateStorage(config.getServletContext());
+newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
 
 newsAdmin.addIncomingNews(request, newsStorage);
 %>
