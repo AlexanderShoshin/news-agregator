@@ -1,6 +1,5 @@
 package agregator.utils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,17 +26,9 @@ public class NewsParser {
     
     private static JSONArray getOrderPack(List<NewsItem> news) {
         JSONArray orderPack = new JSONArray();
-        Map<Integer, Integer> newsIndexById = new HashMap<Integer, Integer>();
-        int itemIndex;
         
         for (NewsItem item: news) {
-            if (newsIndexById.containsKey(item.getId())) {
-                itemIndex = newsIndexById.get(item.getId());
-            } else {
-                itemIndex = newsIndexById.size();
-                newsIndexById.put(item.getId(), itemIndex);
-            }
-            orderPack.put(itemIndex);
+            orderPack.put(item.getId());
         }
         
         return orderPack;
@@ -71,6 +62,7 @@ public class NewsParser {
         JSONObject item = new JSONObject();
         JSONArray images = new JSONArray();
 
+        item.put("id", newsItem.getId());
         item.put("title", newsItem.getTitle());
         item.put("author", newsItem.getAuthor());
         item.put("category", newsItem.getCategory());
@@ -112,11 +104,15 @@ public class NewsParser {
         return "<td>" + value + "</td>";
     }
     
-    public static NewsItem getNewsItem(Map<String, String[]> params) throws EmptyParamException {
+    public static NewsItem getNewsItem(Map<String, String[]> params) {
         NewsItem newItem = new NewsItem();
-        newItem.setTitle(getParam(params, "title"));
-        newItem.setImagesFolder(getParam(params, "imagesFolder"));
-        return newItem;
+        try {
+            newItem.setTitle(getParam(params, "title"));
+            newItem.setImagesFolder(getParam(params, "imagesFolder"));
+            return newItem;
+        } catch (EmptyParamException e) {
+            return null;
+        }
     }
     
     private static String getParam(Map<String, String[]> params, String paramName) throws EmptyParamException {

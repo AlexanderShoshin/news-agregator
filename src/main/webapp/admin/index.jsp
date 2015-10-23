@@ -14,6 +14,7 @@ stateStorage = StoragesKeeper.getStateStorage(config.getServletContext());
 newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
 
 newsAdmin.addIncomingNews(request, newsStorage);
+newsAdmin.changeCategoryFilter(request, stateStorage);
 %>
 <html>
     <head>
@@ -44,6 +45,20 @@ newsAdmin.addIncomingNews(request, newsStorage);
                 </p>
                 <p>
                     <input type="submit" value="add">
+                </p>
+            </form>
+        </div>
+        <div>
+            <h2>Switch category filter:</h2>
+            <form>
+                <p>
+                    enable
+                    <input type="checkbox" name="categoryFilterEnabled" <%= newsAdmin.getCatFilterStatus(stateStorage) %>><br>
+                    value
+                    <input type="text" name="categoryFilterValue" value="<%= newsAdmin.getCatFilterValue(stateStorage) %>">
+                </p>
+                <p>
+                    <input type="submit" value="Save">
                 </p>
             </form>
         </div>

@@ -26,4 +26,22 @@ public class ContextStateStorage implements StateStorage {
         Object id = context.getAttribute("isAdminVisited");
         return id == null ? false : (Boolean)id;
     }
+
+    public void setCategoryFilterEnabled(boolean isEnabled) {
+        context.setAttribute("categoryFilterEnabled", isEnabled);
+    }
+
+    public void setCategoryFilter(String category) {
+        context.setAttribute("categoryFilter", category);
+    }
+
+    public boolean getCategoryFilterEnabled() {
+        Object value = context.getAttribute("categoryFilterEnabled");
+        return value == null ? false : (Boolean)value;
+    }
+
+    public String getCategoryFilter() {
+        Object value = context.getAttribute("categoryFilter");
+        return value == null ? "career" : (String)value;
+    }
 }

@@ -4,11 +4,11 @@ h1 {
 
 div {
     display: inline-block;
+    margin: 0 30px;
 }
 
 div.table {
     float: left;
-    margin: 0 30px;
 }
 
 h2 {
