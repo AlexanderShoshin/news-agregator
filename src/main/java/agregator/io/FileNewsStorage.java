@@ -23,17 +23,12 @@ public class FileNewsStorage implements NewsStorage {
     }
     
     public List<NewsItem> parse() throws ParserConfigurationException, SAXException, IOException {
-        List<NewsItem> news;
-        NodeList nNews;
-        NewsItem nItem;
-        int newsCnt;
-        List<String> images;
+        List<NewsItem> news = new ArrayList<NewsItem>();
         Document newsXml = getDoc();
-        
-        news = new ArrayList<NewsItem>();
-        
-        nNews = newsXml.getElementsByTagName("newsItem");
-        newsCnt = nNews.getLength();
+        NodeList nNews = newsXml.getElementsByTagName("newsItem");
+        int newsCnt = nNews.getLength();
+        NewsItem nItem;
+        List<String> images;
         
         for (int i = 0; i < newsCnt; i++) {
             nItem = new NewsItem();
@@ -57,8 +52,8 @@ public class FileNewsStorage implements NewsStorage {
     
     private Document getDoc() throws ParserConfigurationException, SAXException, IOException {
         String file = Config.getLocalNewsDescriptor();
-        
         XMLLoader xmlLoader = new XMLLoader();
+        
         return xmlLoader.loadXML(path + "/" + file);
     }
     
@@ -80,12 +75,11 @@ public class FileNewsStorage implements NewsStorage {
         }
     }
     
-    public void add(NewsItem item) throws Exception {
+    public void add(NewsItem item) throws ParserConfigurationException, SAXException, IOException, TransformerException  {
         Document newsXml = getDoc();
-        
         Element newsItem = newsXml.createElement("newsItem");
-        newsXml.getDocumentElement().appendChild(newsItem);
         
+        newsXml.getDocumentElement().appendChild(newsItem);
         newsItem.appendChild(createElement(newsXml, "category", item.getCategory()));
         newsItem.appendChild(createElement(newsXml, "title", item.getTitle()));
         newsItem.appendChild(createElement(newsXml, "description", item.getDescription()));
@@ -93,7 +87,6 @@ public class FileNewsStorage implements NewsStorage {
         newsItem.appendChild(createElement(newsXml, "publishedDate", item.getPublishedDate()));
         newsItem.appendChild(createElement(newsXml, "author", item.getAuthor()));
         newsItem.appendChild(createElement(newsXml, "source", item.getSource()));
-        
         saveDoc(newsXml);
     }
     

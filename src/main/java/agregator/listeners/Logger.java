@@ -27,7 +27,7 @@ public class Logger implements ServletRequestListener, ServletContextAttributeLi
     }
 
     public void requestInitialized(ServletRequestEvent sre)  {
-         Log.writeEvent("start request processing");
+        Log.writeEvent("start request processing");
     }
     
     public void attributeReplaced(ServletContextAttributeEvent event)  { 

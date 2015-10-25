@@ -14,9 +14,8 @@ import agregator.structure.NewsItem;
 
 public class NewsParser {
     public static String getJsonPack(List<NewsItem> news) {
-        JSONObject pack;
+        JSONObject pack = new JSONObject();
         
-        pack = new JSONObject();
         pack.put("order", getOrderPack(news));
         pack.put("delays", getDelaysPack(news));
         pack.put("news", getNewsPack(news));
