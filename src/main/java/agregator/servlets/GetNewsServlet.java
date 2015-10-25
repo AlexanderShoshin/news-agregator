@@ -26,7 +26,6 @@ public class GetNewsServlet extends HttpServlet {
     
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        
         stateStorage = StoragesKeeper.getStateStorage(config.getServletContext());
         newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
         newsWire = new NewsWire();
