@@ -1,8 +1,13 @@
 package agregator.core;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
 
 import agregator.io.NewsStorage;
 import agregator.io.StateStorage;
@@ -10,12 +15,10 @@ import agregator.structure.NewsItem;
 import agregator.utils.NewsParser;
 
 public class NewsAdmin {
-    public String getNewsTable(NewsStorage newsStorage) throws Exception {
-        String htmlTable;
-        List<NewsItem> news;
-        
-        news = newsStorage.parse();
-        htmlTable = NewsParser.getHtmlTable(news);
+    public String getNewsTable(NewsStorage newsStorage)
+            throws ParserConfigurationException, SAXException, IOException {
+        List<NewsItem> news = newsStorage.parse();
+        String htmlTable = NewsParser.getHtmlTable(news);
         
         return htmlTable;
     }
@@ -30,24 +33,19 @@ public class NewsAdmin {
         }
     }
     
-    public void addIncomingNews(HttpServletRequest request, NewsStorage newsStorage) throws Exception {
+    public void addIncomingNews(HttpServletRequest request, NewsStorage newsStorage)
+            throws ParserConfigurationException, SAXException, IOException, TransformerException {
         NewsItem newsItem = NewsParser.getNewsItem(request.getParameterMap());
         if (newsItem != null) newsStorage.add(newsItem);
     }
     
     public void changeCategoryFilter(HttpServletRequest request, StateStorage stateStorage) {
-        String value;
-        
-        value = request.getParameter("categoryFilterValue");
+        String value = request.getParameter("categoryFilterValue");
         if (value != null) {
             stateStorage.setCategoryFilter(value);
             
             value = request.getParameter("categoryFilterEnabled");
-            if (value != null) {
-                stateStorage.setCategoryFilterEnabled(true);
-            } else {
-                stateStorage.setCategoryFilterEnabled(false);
-            }
+            stateStorage.setCategoryFilterEnabled(value != null);
         }
     }
     

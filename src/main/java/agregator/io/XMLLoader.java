@@ -23,11 +23,8 @@ public class XMLLoader {
     }
     
     public Document loadXML(String path) throws SAXException, IOException {
-        Document doc;
-        
-        doc = docBuilder.parse(new File(path));
+        Document doc = docBuilder.parse(new File(path));
         doc.getDocumentElement().normalize();
-        
         return doc;
     }
     
