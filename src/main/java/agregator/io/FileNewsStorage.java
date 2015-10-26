@@ -22,7 +22,7 @@ public class FileNewsStorage implements NewsStorage {
         this.path = path;
     }
     
-    public List<NewsItem> parse() throws ParserConfigurationException, SAXException, IOException {
+    synchronized public List<NewsItem> parse() throws ParserConfigurationException, SAXException, IOException {
         List<NewsItem> news = new ArrayList<NewsItem>();
         Document newsXml = getDoc();
         NodeList nNews = newsXml.getElementsByTagName("newsItem");
@@ -75,7 +75,7 @@ public class FileNewsStorage implements NewsStorage {
         }
     }
     
-    public void add(NewsItem item) throws ParserConfigurationException, SAXException, IOException, TransformerException  {
+    synchronized public void add(NewsItem item) throws ParserConfigurationException, SAXException, IOException, TransformerException  {
         Document newsXml = getDoc();
         Element newsItem = newsXml.createElement("newsItem");
         
