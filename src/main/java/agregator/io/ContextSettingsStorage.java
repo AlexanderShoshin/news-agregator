@@ -2,10 +2,10 @@ package agregator.io;
 
 import javax.servlet.ServletContext;
 
-public class ContextStateStorage implements StateStorage {
+public class ContextSettingsStorage implements SettingsStorage {
     private ServletContext context;
     
-    public ContextStateStorage(ServletContext context) {
+    public ContextSettingsStorage(ServletContext context) {
         this.context = context;
     }
 

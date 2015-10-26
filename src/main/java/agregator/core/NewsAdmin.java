@@ -10,7 +10,7 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 import agregator.io.NewsStorage;
-import agregator.io.StateStorage;
+import agregator.io.SettingsStorage;
 import agregator.structure.NewsItem;
 import agregator.utils.NewsParser;
 
@@ -23,12 +23,12 @@ public class NewsAdmin {
         return htmlTable;
     }
     
-    public String getGreeting(StateStorage stateStorage) {
-        Boolean pageVisited = stateStorage.getIsAdminVisited();
+    public String getGreeting(SettingsStorage settingsStorage) {
+        Boolean pageVisited = settingsStorage.getIsAdminVisited();
         if (pageVisited) {
             return "";
         } else {
-            stateStorage.setIsAdminVisited(true);
+            settingsStorage.setIsAdminVisited(true);
             return "May the fource be with you!";
         }
     }
@@ -39,26 +39,26 @@ public class NewsAdmin {
         if (newsItem != null) newsStorage.add(newsItem);
     }
     
-    public void changeCategoryFilter(HttpServletRequest request, StateStorage stateStorage) {
+    public void changeCategoryFilter(HttpServletRequest request, SettingsStorage settingsStorage) {
         String value = request.getParameter("categoryFilterValue");
         if (value != null) {
-            stateStorage.setCategoryFilter(value);
+            settingsStorage.setCategoryFilter(value);
             
             value = request.getParameter("categoryFilterEnabled");
-            stateStorage.setCategoryFilterEnabled(value != null);
+            settingsStorage.setCategoryFilterEnabled(value != null);
         }
     }
     
-    public String getCatFilterStatus(StateStorage stateStorage) {
+    public String getCatFilterStatus(SettingsStorage settingsStorage) {
         String status = "";
-        if (stateStorage.getCategoryFilterEnabled()) {
+        if (settingsStorage.getCategoryFilterEnabled()) {
             status = "checked";
         }
         
         return status;
     }
     
-    public String getCatFilterValue(StateStorage stateStorage) {
-        return stateStorage.getCategoryFilter();
+    public String getCatFilterValue(SettingsStorage settingsStorage) {
+        return settingsStorage.getCategoryFilter();
     }
 }

@@ -1,27 +1,27 @@
 <%@ page import="agregator.core.NewsAdmin,
                  agregator.io.NewsStorage,
-                 agregator.io.StateStorage,
+                 agregator.io.SettingsStorage,
                  agregator.core.StoragesKeeper"
 %>
 <%!
 private NewsAdmin newsAdmin;
 private NewsStorage newsStorage;
-private StateStorage stateStorage;
+private SettingsStorage settingsStorage;
 %>
 <%
 newsAdmin = new NewsAdmin();
-stateStorage = StoragesKeeper.getStateStorage(config.getServletContext());
+settingsStorage = StoragesKeeper.getSettingsStorage(config.getServletContext());
 newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
 
 newsAdmin.addIncomingNews(request, newsStorage);
-newsAdmin.changeCategoryFilter(request, stateStorage);
+newsAdmin.changeCategoryFilter(request, settingsStorage);
 %>
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="css/main.css">
     </head>
     <body>
-        <h1><%= newsAdmin.getGreeting(stateStorage) %></h1>
+        <h1><%= newsAdmin.getGreeting(settingsStorage) %></h1>
         <div class="table">
             <h2>Current news:</h2>
             <table class="news">
@@ -53,9 +53,9 @@ newsAdmin.changeCategoryFilter(request, stateStorage);
             <form>
                 <p>
                     enable
-                    <input type="checkbox" name="categoryFilterEnabled" <%= newsAdmin.getCatFilterStatus(stateStorage) %>><br>
+                    <input type="checkbox" name="categoryFilterEnabled" <%= newsAdmin.getCatFilterStatus(settingsStorage) %>><br>
                     value
-                    <input type="text" name="categoryFilterValue" value="<%= newsAdmin.getCatFilterValue(stateStorage) %>">
+                    <input type="text" name="categoryFilterValue" value="<%= newsAdmin.getCatFilterValue(settingsStorage) %>">
                 </p>
                 <p>
                     <input type="submit" value="Save">

@@ -1,6 +1,6 @@
 package agregator.io;
 
-public interface StateStorage {
+public interface SettingsStorage {
     void setLastItemSent(int cnt);
     void setIsAdminVisited(boolean isVisited);
     void setCategoryFilterEnabled(boolean isEnabled);
