@@ -2,20 +2,11 @@ package agregator.io;
 
 import javax.servlet.ServletContext;
 
-public class ContextStateStorage implements StateStorage {
+public class ContextSettingsStorage implements SettingsStorage {
     private ServletContext context;
     
-    public ContextStateStorage(ServletContext context) {
+    public ContextSettingsStorage(ServletContext context) {
         this.context = context;
-    }
-
-    public void setLastItemSent(int id) {
-        context.setAttribute("lastItemSent", id);
-    }
-
-    public int getLastItemSent() {
-        Object id = context.getAttribute("lastItemSent");
-        return id == null ? 0 : (Integer)id;
     }
 
     public void setIsAdminVisited(boolean isVisited) {

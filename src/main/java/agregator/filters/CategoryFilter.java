@@ -13,12 +13,12 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
 import agregator.core.StoragesKeeper;
-import agregator.io.StateStorage;
+import agregator.io.SettingsStorage;
 import agregator.utils.NewsProcessor;
 
 @WebFilter("/GetNewsServlet")
 public class CategoryFilter implements Filter {
-    private StateStorage stateStorage;
+    private SettingsStorage settingsStorage;
     
 	public void destroy() {
 	}
@@ -34,8 +34,8 @@ public class CategoryFilter implements Filter {
 	private String filterOutput(String output) {
 	    String filteredCategory;
 	    
-	    if (stateStorage.getCategoryFilterEnabled()) {
-	        filteredCategory = stateStorage.getCategoryFilter();
+	    if (settingsStorage.getCategoryFilterEnabled()) {
+	        filteredCategory = settingsStorage.getCategoryFilter();
 	        return NewsProcessor.filterByField(output, "category", filteredCategory);
 	    } else {
 	        return output;
@@ -44,6 +44,6 @@ public class CategoryFilter implements Filter {
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {
-	    stateStorage = StoragesKeeper.getStateStorage(fConfig.getServletContext());
+	    settingsStorage = StoragesKeeper.getSettingsStorage(fConfig.getServletContext());
 	}
 }

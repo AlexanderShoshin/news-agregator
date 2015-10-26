@@ -1,66 +1,64 @@
 package agregator.core;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
 
 import agregator.io.NewsStorage;
-import agregator.io.StateStorage;
+import agregator.io.SettingsStorage;
 import agregator.structure.NewsItem;
 import agregator.utils.NewsParser;
 
 public class NewsAdmin {
-    public String getNewsTable(NewsStorage newsStorage) throws Exception {
-        String htmlTable;
-        List<NewsItem> news;
-        
-        news = newsStorage.parse();
-        htmlTable = NewsParser.getHtmlTable(news);
+    public String getNewsTable(NewsStorage newsStorage)
+            throws ParserConfigurationException, SAXException, IOException {
+        List<NewsItem> news = newsStorage.parse();
+        String htmlTable = NewsParser.getHtmlTable(news);
         
         return htmlTable;
     }
     
-    public String getGreeting(StateStorage stateStorage) {
-        Boolean pageVisited = stateStorage.getIsAdminVisited();
+    public String getGreeting(SettingsStorage settingsStorage) {
+        Boolean pageVisited = settingsStorage.getIsAdminVisited();
         if (pageVisited) {
             return "";
         } else {
-            stateStorage.setIsAdminVisited(true);
+            settingsStorage.setIsAdminVisited(true);
             return "May the fource be with you!";
         }
     }
     
-    public void addIncomingNews(HttpServletRequest request, NewsStorage newsStorage) throws Exception {
+    public void addIncomingNews(HttpServletRequest request, NewsStorage newsStorage)
+            throws ParserConfigurationException, SAXException, IOException, TransformerException {
         NewsItem newsItem = NewsParser.getNewsItem(request.getParameterMap());
         if (newsItem != null) newsStorage.add(newsItem);
     }
     
-    public void changeCategoryFilter(HttpServletRequest request, StateStorage stateStorage) {
-        String value;
-        
-        value = request.getParameter("categoryFilterValue");
+    public void changeCategoryFilter(HttpServletRequest request, SettingsStorage settingsStorage) {
+        String value = request.getParameter("categoryFilterValue");
         if (value != null) {
-            stateStorage.setCategoryFilter(value);
+            settingsStorage.setCategoryFilter(value);
             
             value = request.getParameter("categoryFilterEnabled");
-            if (value != null) {
-                stateStorage.setCategoryFilterEnabled(true);
-            } else {
-                stateStorage.setCategoryFilterEnabled(false);
-            }
+            settingsStorage.setCategoryFilterEnabled(value != null);
         }
     }
     
-    public String getCatFilterStatus(StateStorage stateStorage) {
+    public String getCatFilterStatus(SettingsStorage settingsStorage) {
         String status = "";
-        if (stateStorage.getCategoryFilterEnabled()) {
+        if (settingsStorage.getCategoryFilterEnabled()) {
             status = "checked";
         }
         
         return status;
     }
     
-    public String getCatFilterValue(StateStorage stateStorage) {
-        return stateStorage.getCategoryFilter();
+    public String getCatFilterValue(SettingsStorage settingsStorage) {
+        return settingsStorage.getCategoryFilter();
     }
 }
