@@ -10,27 +10,27 @@ import org.xml.sax.SAXException;
 
 import agregator.io.Config;
 import agregator.io.NewsStorage;
-import agregator.io.SettingsStorage;
 import agregator.structure.NewsItem;
+import agregator.structure.NewsState;
 
 public class LinearSlider implements Slider {
 
-    public List<NewsItem> getNextSlides(SettingsStorage settingsStorage, NewsStorage newsStorage)
+    public List<NewsItem> getNextSlides(NewsState curState, NewsStorage newsStorage)
             throws ParserConfigurationException, SAXException, IOException {
         List<NewsItem> news = newsStorage.parse();
         if (news.size() > 0) {
-            return getSlides(news, settingsStorage);
+            return getSlides(news, curState);
         } else {
             return new ArrayList<NewsItem>();
         }
     }
     
-    private List<NewsItem> getSlides(List<NewsItem> news, SettingsStorage settingsStorage) {
+    private List<NewsItem> getSlides(List<NewsItem> news, NewsState curState) {
         List<NewsItem> selectedNews = new ArrayList<NewsItem>();
         int packCount = Config.getPackNewsCount();
         int selectedCount = 0;
         int curId = 0;
-        int lastSentId = settingsStorage.getLastItemSent();
+        int lastSentId = curState.getLastItemSent();
         
         while (selectedCount < packCount) {
             selectedCount++;
@@ -39,7 +39,7 @@ public class LinearSlider implements Slider {
         }
         
         lastSentId = curId;
-        settingsStorage.setLastItemSent(lastSentId);
+        curState.setLastItemSent(lastSentId);
         
         return selectedNews;
     }

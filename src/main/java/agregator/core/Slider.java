@@ -10,8 +10,9 @@ import org.xml.sax.SAXException;
 import agregator.io.NewsStorage;
 import agregator.io.SettingsStorage;
 import agregator.structure.NewsItem;
+import agregator.structure.NewsState;
 
 public interface Slider {
-    public List<NewsItem> getNextSlides(SettingsStorage settingsStorage, NewsStorage newsStorage)
+    public List<NewsItem> getNextSlides(NewsState curState, NewsStorage newsStorage)
             throws ParserConfigurationException, SAXException, IOException;
 }

@@ -15,25 +15,24 @@ import org.xml.sax.SAXException;
 import agregator.core.NewsWire;
 import agregator.core.StoragesKeeper;
 import agregator.io.NewsStorage;
-import agregator.io.SettingsStorage;
+import agregator.structure.NewsState;
 
 @WebServlet("/GetNewsServlet")
 public class GetNewsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private NewsWire newsWire;
-    private SettingsStorage settingsStorage;
     private NewsStorage newsStorage;
     
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        settingsStorage = StoragesKeeper.getSettingsStorage(config.getServletContext());
         newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
         newsWire = new NewsWire();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        NewsState curState = new NewsState(request.getSession());
         try {
-            response.getOutputStream().write(newsWire.getNextPack(settingsStorage, newsStorage).getBytes());
+            response.getOutputStream().write(newsWire.getNextPack(curState, newsStorage).getBytes());
         } catch (ParserConfigurationException | SAXException e) {
             response.getOutputStream().write("Server error".getBytes());
         }
