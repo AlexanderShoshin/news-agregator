@@ -15,12 +15,12 @@ public class NewsFilterTest {
         String packBefore;
         String packAfter;
         
-        newsPack.add(newItem(1, "education"));
+        newsPack.add(newItem(1, "career"));
         packAfter = NewsParser.getJsonPack(newsPack);
         newsPack.add(newItem(2, "sport"));
         packBefore = NewsParser.getJsonPack(newsPack);
         
-        Assert.assertTrue(packAfter.equals(NewsProcessor.filterByField(packBefore, "category", "education")));
+        Assert.assertTrue(packAfter.equals(NewsProcessor.filterByField(packBefore, "category", "career")));
     }
 
     private NewsItem newItem(int id, String category) {
