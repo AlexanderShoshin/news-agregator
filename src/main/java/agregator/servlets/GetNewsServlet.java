@@ -1,6 +1,6 @@
 package agregator.servlets;
 
-import java.io.IOExceptio;
+import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -32,7 +32,7 @@ public class GetNewsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         NewsState curState = new NewsState(request.getSession());
         try {
-            response.getOutputStream().write(newsWire.getNextPack(curState, newsStorage).getBytes());
+            respons.getOutputStream().write(newsWire.getNextPack(curState, newsStorage).getBytes());
         } catch (ParserConfigurationException | SAXException e) {
             response.getOutputStream().write("Server error".getBytes());
         }
