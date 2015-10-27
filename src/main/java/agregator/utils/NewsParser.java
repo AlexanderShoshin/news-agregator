@@ -18,7 +18,7 @@ public class NewsParser {
         
         pack.put("order", getOrderPack(news));
         pack.put("delays", getDelaysPack(news));
-        pack.put("news", getNewsPack(news));
+        pack.put("n", getNewsPack(news));
         
         return pack.toString();
     }
