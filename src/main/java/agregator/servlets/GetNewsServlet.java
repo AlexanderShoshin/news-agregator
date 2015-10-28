@@ -32,7 +32,7 @@ public class GetNewsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         NewsState curState = new NewsState(request.getSession());
         try {
-            response.getOutputStream().write(newsWire.getNextPack(curState, newsStorage).getBytes());
+            response.getOutputStream().write(("correct" + newsWire.getNextPack(curState, newsStorage)).getBytes());
         } catch (ParserConfigurationException | SAXException e) {
             response.getOutputStream().write("Server error".getBytes());
         }

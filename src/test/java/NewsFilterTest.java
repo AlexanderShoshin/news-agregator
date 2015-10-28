@@ -15,7 +15,7 @@ public class NewsFilterTest {
         String packBefore;
         String packAfter;
         
-        newsPack.add(newItem(1, "sport"));
+        newsPack.add(newItem(1, "career"));
         packAfter = NewsParser.getJsonPack(newsPack);
         newsPack.add(newItem(2, "sport"));
         packBefore = NewsParser.getJsonPack(newsPack);
