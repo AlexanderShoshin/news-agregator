@@ -8,7 +8,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import agregator.io.NewsStorage;
-import agregator.io.SettingsStorage;
 import agregator.structure.NewsItem;
 import agregator.structure.NewsState;
 
