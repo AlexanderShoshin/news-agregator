@@ -17,7 +17,7 @@ import agregator.core.StoragesKeeper;
 import agregator.io.NewsStorage;
 import agregator.structure.NewsState;
 
-@WebServlet("/GetNewsServlet")
+@WebServlet("/")
 public class GetNewsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private NewsWire newsWire;
