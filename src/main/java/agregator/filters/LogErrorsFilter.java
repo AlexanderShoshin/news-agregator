@@ -14,6 +14,8 @@ import agregator.io.Log;
 
 @WebFilter("/*")
 public class LogErrorsFilter implements Filter {
+    private Log log;
+    
 	public void destroy() {
 	}
 
@@ -21,14 +23,15 @@ public class LogErrorsFilter implements Filter {
 	    try {
 	        chain.doFilter(request, response);
 	    } catch (IOException exc) {
-	        Log.writeEvent("ERROR " + exc.getMessage());
+	        log.writeEvent("ERROR " + exc.getMessage());
 	        throw new IOException(exc.getMessage());
 	    } catch (ServletException exc) {
-	        Log.writeEvent("ERROR " + exc.getMessage());
+	        log.writeEvent("ERROR " + exc.getMessage());
             throw new ServletException(exc.getMessage());
 	    }
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {
+	    log = new Log();
 	}
 }

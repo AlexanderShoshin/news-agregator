@@ -10,28 +10,30 @@ import agregator.io.Log;
 
 @WebListener
 public class Logger implements ServletRequestListener, ServletContextAttributeListener {
+    private Log log;
+    
     public Logger() {
-        Log.writeEvent("start log");
+        this.log = new Log();
     }
 
     public void attributeAdded(ServletContextAttributeEvent event)  { 
-        Log.writeEvent(event.getName() + " context attribute initialized with value " + event.getValue());
+        log.writeEvent(event.getName() + " context attribute initialized with value " + event.getValue());
     }
 
     public void requestDestroyed(ServletRequestEvent sre)  { 
-        Log.writeEvent("end request processing");
+        log.writeEvent("end request processing");
     }
 
     public void attributeRemoved(ServletContextAttributeEvent event)  { 
-        Log.writeEvent(event.getName() + " context attribute was deleted");
+        log.writeEvent(event.getName() + " context attribute was deleted");
     }
 
     public void requestInitialized(ServletRequestEvent sre)  {
-        Log.writeEvent("start request processing");
+        log.writeEvent("start request processing");
     }
     
     public void attributeReplaced(ServletContextAttributeEvent event)  { 
-        Log.writeEvent(event.getName() + " context attribute change value to " + event.getValue());
+        log.writeEvent(event.getName() + " context attribute change value to " + event.getValue());
     }
 	
 }
