@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.springframework.context.ApplicationContext;
 import org.xml.sax.SAXException;
 
 import agregator.core.NewsWire;
@@ -26,7 +27,9 @@ public class GetNewsServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
-        newsWire = new NewsWire();
+        
+        ApplicationContext springContext = StoragesKeeper.getSpringContext(config.getServletContext());
+        newsWire = (NewsWire) springContext.getBean("newsWire");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

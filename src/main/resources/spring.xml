@@ -7,6 +7,17 @@
             http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
             http://www.springframework.org/schema/util
             http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+           
+    <util:map id="strategyMap">
+        <entry key="LINEAR" value-ref="linearSlider" />
+    </util:map>     
             
     <bean id="consoleLogger" class="agregator.io.Log" />
+    
+    <bean id="linearSlider" class="agregator.core.LinearSlider" scope="prototype" />
+    
+    <bean id="newsWire" class="agregator.core.NewsWire" scope="prototype">
+        <property name="newsSelector"
+                  value="#{strategyMap[T(agregator.io.Config).getSlideStrategy().name()]}" />
+    </bean>
 </beans>
