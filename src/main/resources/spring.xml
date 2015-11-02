@@ -17,7 +17,7 @@
     <bean id="linearSlider" class="agregator.core.LinearSlider" scope="prototype" />
     
     <bean id="newsWire" class="agregator.core.NewsWire" scope="prototype">
-        <property name="newsSelector"
-                  value="#{strategyMap[T(agregator.io.Config).getSlideStrategy().name()]}" />
+        <constructor-arg name="newsSelector"
+                         value="#{strategyMap[T(agregator.io.Config).getSlideStrategy().name()]}" />
     </bean>
 </beans>

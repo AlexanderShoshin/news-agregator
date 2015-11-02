@@ -15,7 +15,7 @@ import agregator.utils.NewsParser;
 public class NewsWire {
     private Slider newsSelector;
     
-    public void setNewsSelector(Slider newsSelector) {
+    public NewsWire(Slider newsSelector) {
         this.newsSelector = newsSelector;
     }
     
