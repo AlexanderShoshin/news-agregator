@@ -20,7 +20,14 @@
     
     <bean name="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" />
     <bean name="jsonTemplate" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
-
+    
+    <mvc:interceptors>
+	    <mvc:interceptor>
+	        <mvc:mapping path="/get-news" />
+	        <bean class="agregator.filters.CategoryFilterInterceptor" />
+	    </mvc:interceptor>
+	</mvc:interceptors>
+    
     <util:map id="strategyMap">
         <entry key="LINEAR" value-ref="linearSlider" />
     </util:map>     
