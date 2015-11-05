@@ -16,7 +16,9 @@ import org.xml.sax.SAXException;
 import agregator.core.NewsWire;
 import agregator.core.StoragesKeeper;
 import agregator.io.NewsStorage;
+import agregator.structure.NewsPack;
 import agregator.structure.NewsState;
+import agregator.utils.NewsParser;
 
 @WebServlet("/")
 public class GetNewsServlet extends HttpServlet {
@@ -34,8 +36,10 @@ public class GetNewsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         NewsState curState = new NewsState(request.getSession());
+        NewsPack newsPack;
         try {
-            response.getOutputStream().write(newsWire.getNextPack(curState, newsStorage).getBytes());
+            newsPack = newsWire.getNextPack(curState, newsStorage);
+            response.getOutputStream().write(NewsParser.getJson(newsPack).getBytes());
         } catch (ParserConfigurationException | SAXException e) {
             response.getOutputStream().write("Server error".getBytes());
         }

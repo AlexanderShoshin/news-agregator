@@ -1,5 +1,6 @@
 package agregator.utils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,38 +12,38 @@ import org.json.JSONObject;
 import agregator.io.Config;
 import agregator.io.EmptyParamException;
 import agregator.structure.NewsItem;
+import agregator.structure.NewsPack;
 
 public class NewsParser {
-    public static String getJsonPack(List<NewsItem> news) {
+    public static int[] getOrder(List<NewsItem> news) {
+        int[] order = new int[news.size()];
+        
+        for (int i = 0; i < order.length; i++) {
+            order[i] = news.get(i).getId();
+        }
+        
+        return order;
+    }
+    
+    public static int[] getDelays(List<NewsItem> news) {
+        int[] delays = new int[news.size()];
+        int defaultDelay = Config.getDefaultSlideDelay();
+        
+        Arrays.fill(delays,  defaultDelay);
+        
+        return delays;
+    }
+    
+    public static String getJson(NewsPack newsPack) {
         JSONObject pack = new JSONObject();
         
-        pack.put("order", getOrderPack(news));
-        pack.put("delays", getDelaysPack(news));
-        pack.put("news", getNewsPack(news));
+        pack.put("order", new JSONArray(newsPack.getOrder()));
+        pack.put("delays", new JSONArray(newsPack.getDelays()));
+        pack.put("news", getNewsPack(newsPack.getNews()));
         
         return pack.toString();
     }
-    
-    private static JSONArray getOrderPack(List<NewsItem> news) {
-        JSONArray orderPack = new JSONArray();
-        
-        for (NewsItem item: news) {
-            orderPack.put(item.getId());
-        }
-        
-        return orderPack;
-    }
-    
-    private static JSONArray getDelaysPack(List<NewsItem> news) {
-        JSONArray delaysPack = new JSONArray();
-        int delay = Config.getDefaultSlideDelay();
-        
-        for (int i = 0; i < news.size(); i++) {
-            delaysPack.put(delay);
-        }
-        return delaysPack;
-    }
-    
+
     private static JSONArray getNewsPack(List<NewsItem> news) {
         JSONArray newsPack = new JSONArray();
         Set<Integer> uniqueItemsIds = new TreeSet<Integer>();
