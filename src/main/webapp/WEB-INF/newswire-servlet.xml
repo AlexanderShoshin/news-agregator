@@ -18,6 +18,9 @@
     <context:annotation-config />
     <context:component-scan base-package="agregator" />
     
+    <bean name="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+    <bean name="jsonTemplate" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+
     <util:map id="strategyMap">
         <entry key="LINEAR" value-ref="linearSlider" />
     </util:map>     
