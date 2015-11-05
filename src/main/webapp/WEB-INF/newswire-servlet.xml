@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+     
+    <mvc:annotation-driven />    
+    <context:annotation-config />
+    <context:component-scan base-package="agregator" />
+    
+    <util:map id="strategyMap">
+        <entry key="LINEAR" value-ref="linearSlider" />
+    </util:map>     
+            
+    <bean id="consoleLogger" class="agregator.io.Log" />
+    
+    <bean id="linearSlider" class="agregator.core.LinearSlider" scope="prototype" />
+    
+    <bean id="newsWire" class="agregator.core.NewsWire" scope="prototype">
+        <constructor-arg name="newsSelector"
+                         value="#{strategyMap[T(agregator.io.Config).getSlideStrategy().name()]}" />
+    </bean>    
+</beans>
