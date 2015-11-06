@@ -2,7 +2,6 @@ package agregator.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -132,20 +131,20 @@ public class NewsParser {
         return "<td>" + value + "</td>";
     }
     
-    public static NewsItem getNewsItem(Map<String, String[]> params) {
+    public static NewsItem getNewsItem(String title, String imagesFolder) {
         NewsItem newItem = new NewsItem();
         try {
-            newItem.setTitle(getParam(params, "title"));
-            newItem.setImagesFolder(getParam(params, "imagesFolder"));
+            newItem.setTitle(getIfNotEmpty(title));
+            newItem.setImagesFolder(getIfNotEmpty(imagesFolder));
             return newItem;
         } catch (EmptyParamException e) {
             return null;
         }
     }
     
-    private static String getParam(Map<String, String[]> params, String paramName) throws EmptyParamException {
-        if (params.containsKey(paramName) && params.get(paramName)[0] != "") {
-            return params.get(paramName)[0];
+    private static String getIfNotEmpty(String param) throws EmptyParamException {
+        if (param != null && param != "") {
+            return param;
         } else {
             throw new EmptyParamException();
         }

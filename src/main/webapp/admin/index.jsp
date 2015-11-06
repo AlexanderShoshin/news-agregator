@@ -13,8 +13,12 @@ newsAdmin = new NewsAdmin();
 settingsStorage = StoragesKeeper.getSettingsStorage(config.getServletContext());
 newsStorage = StoragesKeeper.getNewsStorage(config.getServletContext());
 
-newsAdmin.addIncomingNews(request, newsStorage);
-newsAdmin.changeCategoryFilter(request, settingsStorage);
+newsAdmin.addIncomingNews(request.getParameter("title"),
+                          request.getParameter("imagesFolder"),
+                          newsStorage);
+newsAdmin.changeCategoryFilter(request.getParameter("categoryFilterValue"),
+                               request.getParameter("categoryFilterEnabled"),
+                               settingsStorage);
 %>
 <html>
     <head>
