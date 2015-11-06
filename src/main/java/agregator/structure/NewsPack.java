@@ -3,18 +3,18 @@ package agregator.structure;
 import java.util.List;
 
 public class NewsPack {
-    private int[] order;
+    private int[] displayOrder;
     private int[] delays;
     private List<NewsItem> news;
     
     public NewsPack(List<NewsItem> news, int[] order, int[] delays) {
-        this.order = order;
+        this.displayOrder = order;
         this.delays = delays;
         this.news = news;
     }
     
     public int[] getOrder() {
-        return order;
+        return displayOrder;
     }
     
     public int[] getDelays() {
