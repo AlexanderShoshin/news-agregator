@@ -143,7 +143,7 @@ public class NewsParser {
     }
     
     private static String getIfNotEmpty(String param) throws EmptyParamException {
-        if (param != null && param != "") {
+        if (param != null && !param.isEmpty()) {
             return param;
         } else {
             throw new EmptyParamException();
