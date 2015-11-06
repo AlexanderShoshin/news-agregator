@@ -98,7 +98,7 @@ public class NewsParser {
         jsonNewsItem.put("source", newsItem.getSource());
         jsonNewsItem.put("publishedDate", newsItem.getPublishedDate());
 
-        for (int i = 0; i < newsItem.getImagesCount(); i++) {
+        for (int i = 0; i < newsItem.getImages().size(); i++) {
             jsonImages.put(newsItem.getImagesFolder() + "/" + newsItem.getImage(i));
 
         }

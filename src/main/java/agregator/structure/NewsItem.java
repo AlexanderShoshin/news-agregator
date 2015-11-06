@@ -17,7 +17,6 @@ public class NewsItem {
     public NewsItem() {
         images = new ArrayList<String>();
     }
-    
     public int getId() {
         return id;
     }
@@ -42,8 +41,8 @@ public class NewsItem {
     public void setDescription(String description) {
         this.description = description;
     }
-    public int getImagesCount() {
-        return images.size();
+    public List<String> getImages() {
+        return images;
     }
     public String getImage(int id) {
         return  images.get(id);
@@ -72,7 +71,6 @@ public class NewsItem {
     public String getImagesFolder() {
         return imagesFolder;
     }
-
     public void setImagesFolder(String imagesFolder) {
         this.imagesFolder = imagesFolder;
     }
