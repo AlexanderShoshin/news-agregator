@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import agregator.core.StoragesKeeper;
 import agregator.io.SettingsStorage;
+import agregator.structure.NewsPack;
+import agregator.utils.NewsParser;
 import agregator.utils.NewsProcessor;
 
-@WebFilter("/GetNewsServlet")
+@WebFilter("/")
 public class CategoryFilter implements Filter {
     private SettingsStorage settingsStorage;
     
@@ -32,11 +34,14 @@ public class CategoryFilter implements Filter {
 	}
 
 	private String filterOutput(String output) {
+	    NewsPack newsPack;
 	    String filteredCategory;
 	    
 	    if (settingsStorage.getCategoryFilterEnabled()) {
 	        filteredCategory = settingsStorage.getCategoryFilter();
-	        return NewsProcessor.filterByField(output, "category", filteredCategory);
+	        newsPack = NewsProcessor.getNewsPack(output);
+	        newsPack = NewsProcessor.filterByCategory(newsPack, filteredCategory);
+	        return NewsParser.getJson(newsPack);
 	    } else {
 	        return output;
 	    }
