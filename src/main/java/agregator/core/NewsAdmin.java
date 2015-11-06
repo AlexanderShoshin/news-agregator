@@ -3,7 +3,6 @@ package agregator.core;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -33,19 +32,16 @@ public class NewsAdmin {
         }
     }
     
-    public void addIncomingNews(HttpServletRequest request, NewsStorage newsStorage)
+    public void addIncomingNews(String title, String imagesFolder, NewsStorage newsStorage)
             throws ParserConfigurationException, SAXException, IOException, TransformerException {
-        NewsItem newsItem = NewsParser.getNewsItem(request.getParameterMap());
+        NewsItem newsItem = NewsParser.getNewsItem(title, imagesFolder);
         if (newsItem != null) newsStorage.add(newsItem);
     }
     
-    public void changeCategoryFilter(HttpServletRequest request, SettingsStorage settingsStorage) {
-        String value = request.getParameter("categoryFilterValue");
-        if (value != null) {
-            settingsStorage.setCategoryFilter(value);
-            
-            value = request.getParameter("categoryFilterEnabled");
-            settingsStorage.setCategoryFilterEnabled(value != null);
+    public void changeCategoryFilter(String categoryFilterValue, String categoryFilterEnabled, SettingsStorage settingsStorage) {
+        if (categoryFilterValue != null) {
+            settingsStorage.setCategoryFilter(categoryFilterValue);
+            settingsStorage.setCategoryFilterEnabled(categoryFilterEnabled != null);
         }
     }
     

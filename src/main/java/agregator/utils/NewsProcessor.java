@@ -1,62 +1,57 @@
 package agregator.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import agregator.io.Config;
+import agregator.structure.NewsItem;
+import agregator.structure.NewsPack;
 
 public class NewsProcessor {
-    public static String filterByField(String jsonNewsPack, String fieldName, String fieldValue) {
-        JSONObject newsPack = new JSONObject(jsonNewsPack);
-        JSONArray order = (JSONArray)newsPack.get("order");
-        JSONArray delays = (JSONArray)newsPack.get("delays");
-        JSONArray news = (JSONArray)newsPack.get("news");
+    public static NewsPack filterByCategory(NewsPack newsPack, String category) {
+        int[] order = newsPack.getOrder();
+        int[] delays = newsPack.getDelays();
+        List<NewsItem> news = newsPack.getNews();
         List<Integer> wasteItemIds;
         List<Integer> filteredIndexes;
-        JSONObject filteredPack;
         
-        wasteItemIds = searchWasteNews(news, fieldName, fieldValue);
+        wasteItemIds = searchWasteNews(news, category);
         news = filterWasteNews(news, wasteItemIds);
         
         filteredIndexes = getCorrectOrderIndexes(order, wasteItemIds);
         order = filterArray(order, filteredIndexes);
         delays = filterArray(delays, filteredIndexes);
         
-        filteredPack = new JSONObject();
-        filteredPack.put("order", order);
-        filteredPack.put("delays", delays);
-        filteredPack.put("news", news);
-        
-        return filteredPack.toString();
+        return new NewsPack(news, order, delays);
     }
     
-    private static List<Integer> searchWasteNews(JSONArray news, String fieldName, String fieldValue) {
+    private static List<Integer> searchWasteNews(List<NewsItem> news, String category) {
         List<Integer> wasteItemIds = new ArrayList<Integer>();
-        JSONObject newsItem;
+        NewsItem newsItem;
         
-        for (int i = 0; i < news.length(); i++) {
-            newsItem = (JSONObject)news.get(i);
-            if (isWaste(newsItem, fieldName, fieldValue)) {
-                wasteItemIds.add((Integer)newsItem.get("id"));
+        for (int i = 0; i < news.size(); i++) {
+            newsItem = news.get(i);
+            if (isWaste(newsItem, category)) {
+                wasteItemIds.add(newsItem.getId());
             }
         }
         
         return wasteItemIds;
     }
     
-    private static boolean isWaste(JSONObject newsItem, String fieldName, String fieldValue) {
-        return !newsItem.get(fieldName).toString().equals(fieldValue);
+    private static boolean isWaste(NewsItem newsItem, String category) {
+        return !newsItem.getCategory().equals(category);
     }
     
-    private static JSONArray filterWasteNews(JSONArray news, List<Integer> wasteItemIds) {
-        JSONArray filteredNews = new JSONArray();
-        JSONObject newsItem;
+    private static List<NewsItem> filterWasteNews(List<NewsItem> news, List<Integer> wasteItemIds) {
+        List<NewsItem> filteredNews = new ArrayList<NewsItem>();
+        NewsItem newsItem;
         
-        for (int i = 0; i < news.length(); i++) {
-            newsItem = (JSONObject)news.get(i);
-            if (!hasVal(wasteItemIds, (Integer)newsItem.get("id"))) {
-                filteredNews.put(newsItem);
+        for (int i = 0; i < news.size(); i++) {
+            newsItem = news.get(i);
+            if (!hasVal(wasteItemIds, newsItem.getId())) {
+                filteredNews.add(newsItem);
             }
         }
         return filteredNews;
@@ -69,11 +64,11 @@ public class NewsProcessor {
         return false;
     }
     
-    private static List<Integer> getCorrectOrderIndexes(JSONArray order, List<Integer> wasteItemIds) {
+    private static List<Integer> getCorrectOrderIndexes(int[] order, List<Integer> wasteItemIds) {
         List<Integer> wasteIndexes = new ArrayList<Integer>();
         
-        for (int i = 0; i < order.length(); i++) {
-            if (!hasVal(wasteItemIds, (Integer)order.get(i))) {
+        for (int i = 0; i < order.length; i++) {
+            if (!hasVal(wasteItemIds, order[i])) {
                 wasteIndexes.add(i);
             }
         }
@@ -81,13 +76,39 @@ public class NewsProcessor {
         return wasteIndexes;
     }
     
-    private static JSONArray filterArray(JSONArray array, List<Integer> filteredIndexes) {
-        JSONArray filteredArray = new JSONArray();
+    private static int[] filterArray(int[] array, List<Integer> filteredIndexes) {
+        List<Integer> filteredList = new ArrayList<Integer>();
+        int[] filteredArray;
         
         for (int i = 0; i < filteredIndexes.size(); i++) {
-            filteredArray.put(array.get(filteredIndexes.get(i)));
+            filteredList.add(array[filteredIndexes.get(i)]);
+        }
+        
+        filteredArray = new int[filteredList.size()];
+        
+        for (int i = 0; i < filteredArray.length; i++) {
+            filteredArray[i] = filteredList.get(i);
         }
         
         return filteredArray;
+    }
+    
+    public static int[] getOrder(List<NewsItem> news) {
+        int[] order = new int[news.size()];
+        
+        for (int i = 0; i < order.length; i++) {
+            order[i] = news.get(i).getId();
+        }
+        
+        return order;
+    }
+    
+    public static int[] getDelays(List<NewsItem> news) {
+        int[] delays = new int[news.size()];
+        int defaultDelay = Config.getDefaultSlideDelay();
+        
+        Arrays.fill(delays,  defaultDelay);
+        
+        return delays;
     }
 }

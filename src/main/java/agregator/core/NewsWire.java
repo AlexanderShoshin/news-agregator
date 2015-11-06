@@ -9,8 +9,9 @@ import org.xml.sax.SAXException;
 
 import agregator.io.NewsStorage;
 import agregator.structure.NewsItem;
+import agregator.structure.NewsPack;
 import agregator.structure.NewsState;
-import agregator.utils.NewsParser;
+import agregator.utils.NewsProcessor;
 
 public class NewsWire {
     private Slider newsSelector;
@@ -19,11 +20,13 @@ public class NewsWire {
         this.newsSelector = newsSelector;
     }
     
-    public String getNextPack(NewsState curState, NewsStorage newsStorage)
+    public NewsPack getNextPack(NewsState curState, NewsStorage newsStorage)
             throws ParserConfigurationException, SAXException, IOException {
-        List<NewsItem> newsPack = newsSelector.getNextSlides(curState, newsStorage);
-        String jsonNewsPack = NewsParser.getJsonPack(newsPack);
+        List<NewsItem> news = newsSelector.getNextSlides(curState, newsStorage);
+        int[] order = NewsProcessor.getOrder(news);
+        int[] delays = NewsProcessor.getDelays(news);
+        NewsPack newsPack = new NewsPack(news, order, delays);
         
-        return jsonNewsPack;
+        return newsPack;
     }
 }
