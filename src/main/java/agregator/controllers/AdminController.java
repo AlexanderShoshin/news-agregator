@@ -31,20 +31,28 @@ public class AdminController {
         newsStorage = StoragesKeeper.getNewsStorage(context);
     }
     
-    @RequestMapping("/admin-page")
-    public String getAdminPage(Model model,
-                               @RequestParam(required = false) String categoryFilterValue,
-                               @RequestParam(required = false) String categoryFilterEnabled,
-                               @RequestParam(required = false) String title,
-                               @RequestParam(required = false) String imagesFolder) throws ParserConfigurationException, SAXException, IOException, TransformerException  {
-        newsAdmin.addIncomingNews(title, imagesFolder, newsStorage);
+    @RequestMapping(value = "/admin-page", params = {"categoryFilterValue", "categoryFilterEnabled"})
+    public String setNewsFilter(Model model,
+                               @RequestParam String categoryFilterValue,
+                               @RequestParam String categoryFilterEnabled) throws ParserConfigurationException, SAXException, IOException {
         newsAdmin.changeCategoryFilter(categoryFilterValue, categoryFilterEnabled, settingsStorage);
-        
+        return getAdminPage(model);
+    }
+    
+    @RequestMapping(value = "/admin-page", params = {"title", "imagesFolder"})
+    public String addNewsItem(Model model,
+                              @RequestParam String title,
+                              @RequestParam String imagesFolder) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+        newsAdmin.addIncomingNews(title, imagesFolder, newsStorage);
+        return getAdminPage(model);
+    }
+    
+    @RequestMapping(value = "/admin-page")
+    public String getAdminPage(Model model) throws ParserConfigurationException, SAXException, IOException{
         model.addAttribute("greeting", newsAdmin.getGreeting(settingsStorage));
         model.addAttribute("newsTable", newsAdmin.getNewsTable(newsStorage));
         model.addAttribute("filterValue", newsAdmin.getCatFilterValue(settingsStorage));
         model.addAttribute("filterStatus", newsAdmin.getCatFilterStatus(settingsStorage));
-        
         return "adminPage";
     }
 }
