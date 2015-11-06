@@ -27,6 +27,17 @@
 	        <bean class="agregator.filters.CategoryFilterInterceptor" />
 	    </mvc:interceptor>
 	</mvc:interceptors>
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix">
+            <value>/WEB-INF/</value>
+        </property>
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean>
+    
+    <mvc:resources mapping="/resources/**" location="/admin/" />
     
     <util:map id="strategyMap">
         <entry key="LINEAR" value-ref="linearSlider" />
