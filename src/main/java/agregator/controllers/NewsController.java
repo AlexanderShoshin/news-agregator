@@ -1,7 +1,6 @@
 package agregator.controllers;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -13,12 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.xml.sax.SAXException;
 
-import agregator.core.LinearSlider;
 import agregator.core.NewsWire;
-import agregator.core.Slider;
 import agregator.core.StoragesKeeper;
 import agregator.io.NewsStorage;
-import agregator.structure.NewsItem;
+import agregator.structure.NewsPack;
 import agregator.structure.NewsState;
 
 @Controller
@@ -35,9 +32,8 @@ public class NewsController {
     @RequestMapping("/get-news")
     public String getNews(HttpSession session, Model model) throws IOException, ParserConfigurationException, SAXException {
         NewsState curState = new NewsState(session);
-        Slider slider = new LinearSlider();
-        List<NewsItem> newsPack = slider.getNextSlides(curState, newsStorage);
-        model.addAttribute("news", newsPack);
+        NewsPack newsPack = newsWire.getNextPack(curState, newsStorage);
+        model.addAttribute(newsPack);
         return "jsonTemplate";
     }
 }
