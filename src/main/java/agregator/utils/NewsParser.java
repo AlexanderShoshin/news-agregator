@@ -1,6 +1,6 @@
 package agregator.utils;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,74 +9,102 @@ import java.util.TreeSet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import agregator.io.Config;
 import agregator.io.EmptyParamException;
 import agregator.structure.NewsItem;
 import agregator.structure.NewsPack;
 
 public class NewsParser {
-    public static int[] getOrder(List<NewsItem> news) {
-        int[] order = new int[news.size()];
+    public static NewsPack jsonToPack(String pack) {
+        JSONObject jsonPack = new JSONObject(pack);
+        JSONArray jsonOrder = (JSONArray)jsonPack.get("order");
+        JSONArray jsonDelays = (JSONArray)jsonPack.get("delays");
+        JSONArray jsonNews = (JSONArray)jsonPack.get("news");
+        int[] order = toIntArray(jsonOrder);
+        int[] delays = toIntArray(jsonDelays);
+        List<NewsItem> news = jsonToNews(jsonNews);
         
-        for (int i = 0; i < order.length; i++) {
-            order[i] = news.get(i).getId();
+        return new NewsPack(news, order, delays);
+    }
+    
+    private static int[] toIntArray(JSONArray jsonArray) {
+        int[] array = new int[jsonArray.length()];
+        
+        for (int i = 0; i < array.length; i++) {
+            array[i] = jsonArray.getInt(i);
         }
         
-        return order;
+        return array;
     }
     
-    public static int[] getDelays(List<NewsItem> news) {
-        int[] delays = new int[news.size()];
-        int defaultDelay = Config.getDefaultSlideDelay();
+    private static List<NewsItem> jsonToNews(JSONArray jsonNews) {
+        List<NewsItem> news = new ArrayList<NewsItem>();
+        NewsItem newsItem;
+        JSONObject jsonNewsItem;
+        JSONArray jsonImages;
         
-        Arrays.fill(delays,  defaultDelay);
+        for (int i = 0; i < jsonNews.length(); i++) {
+            newsItem = new NewsItem();
+            jsonNewsItem = (JSONObject) jsonNews.get(i);
+            newsItem.setId((Integer) jsonNewsItem.get("id"));
+            newsItem.setTitle((String) jsonNewsItem.get("title"));
+            newsItem.setAuthor((String) jsonNewsItem.get("author"));
+            newsItem.setCategory((String) jsonNewsItem.get("category"));
+            newsItem.setDescription((String) jsonNewsItem.get("description"));
+            newsItem.setSource((String) jsonNewsItem.get("source"));
+            newsItem.setPublishedDate((String) jsonNewsItem.get("publishedDate"));
+            jsonImages = (JSONArray) jsonNewsItem.get("images");
+            for (int j = 0; j < jsonImages.length(); j++) {
+                newsItem.addImage(jsonImages.getString(j));
+            }
+            news.add(newsItem);
+        }
         
-        return delays;
+        return news;
     }
     
-    public static String getJson(NewsPack newsPack) {
-        JSONObject pack = new JSONObject();
+    public static String packToJson(NewsPack newsPack) {
+        JSONObject jsonPack = new JSONObject();
         
-        pack.put("order", new JSONArray(newsPack.getOrder()));
-        pack.put("delays", new JSONArray(newsPack.getDelays()));
-        pack.put("news", getNewsPack(newsPack.getNews()));
+        jsonPack.put("order", new JSONArray(newsPack.getOrder()));
+        jsonPack.put("delays", new JSONArray(newsPack.getDelays()));
+        jsonPack.put("news", getJsonNews(newsPack.getNews()));
         
-        return pack.toString();
+        return jsonPack.toString();
     }
 
-    private static JSONArray getNewsPack(List<NewsItem> news) {
-        JSONArray newsPack = new JSONArray();
+    private static JSONArray getJsonNews(List<NewsItem> news) {
+        JSONArray jsonNews = new JSONArray();
         Set<Integer> uniqueItemsIds = new TreeSet<Integer>();
         
         for (NewsItem item: news) {
             if (!uniqueItemsIds.contains(item.getId())) {
                 uniqueItemsIds.add(item.getId());
-                newsPack.put(NewsParser.getJsonNewsItem(item));
+                jsonNews.put(NewsParser.getJsonNewsItem(item));
             }
         }
         
-        return newsPack;
+        return jsonNews;
     }
     
     public static JSONObject getJsonNewsItem(NewsItem newsItem) {
-        JSONObject item = new JSONObject();
-        JSONArray images = new JSONArray();
+        JSONObject jsonNewsItem = new JSONObject();
+        JSONArray jsonImages = new JSONArray();
 
-        item.put("id", newsItem.getId());
-        item.put("title", newsItem.getTitle());
-        item.put("author", newsItem.getAuthor());
-        item.put("category", newsItem.getCategory());
-        item.put("description", newsItem.getDescription());
-        item.put("source", newsItem.getSource());
-        item.put("publishedDate", newsItem.getPublishedDate());
+        jsonNewsItem.put("id", newsItem.getId());
+        jsonNewsItem.put("title", newsItem.getTitle());
+        jsonNewsItem.put("author", newsItem.getAuthor());
+        jsonNewsItem.put("category", newsItem.getCategory());
+        jsonNewsItem.put("description", newsItem.getDescription());
+        jsonNewsItem.put("source", newsItem.getSource());
+        jsonNewsItem.put("publishedDate", newsItem.getPublishedDate());
 
         for (int i = 0; i < newsItem.getImagesCount(); i++) {
-            images.put(newsItem.getImagesFolder() + "/" + newsItem.getImage(i));
+            jsonImages.put(newsItem.getImagesFolder() + "/" + newsItem.getImage(i));
 
         }
-        item.put("images", images);
+        jsonNewsItem.put("images", jsonImages);
         
-        return item;
+        return jsonNewsItem;
     }
     
     public static String getHtmlTable(List<NewsItem> news) {

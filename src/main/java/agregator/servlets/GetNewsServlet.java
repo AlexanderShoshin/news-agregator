@@ -39,7 +39,7 @@ public class GetNewsServlet extends HttpServlet {
         NewsPack newsPack;
         try {
             newsPack = newsWire.getNextPack(curState, newsStorage);
-            response.getOutputStream().write(NewsParser.getJson(newsPack).getBytes());
+            response.getOutputStream().write(NewsParser.packToJson(newsPack).getBytes());
         } catch (ParserConfigurationException | SAXException e) {
             response.getOutputStream().write("Server error".getBytes());
         }

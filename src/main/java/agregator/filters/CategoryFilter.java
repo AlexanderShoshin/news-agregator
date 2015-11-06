@@ -39,13 +39,12 @@ public class CategoryFilter implements Filter {
 	    
 	    if (settingsStorage.getCategoryFilterEnabled()) {
 	        filteredCategory = settingsStorage.getCategoryFilter();
-	        newsPack = NewsProcessor.getNewsPack(output);
+	        newsPack = NewsParser.jsonToPack(output);
 	        newsPack = NewsProcessor.filterByCategory(newsPack, filteredCategory);
-	        return NewsParser.getJson(newsPack);
+	        return NewsParser.packToJson(newsPack);
 	    } else {
 	        return output;
 	    }
-	    
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {
