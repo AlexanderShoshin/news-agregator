@@ -33,7 +33,9 @@ public class NewsController {
     public String getNews(HttpSession session, Model model) throws IOException, ParserConfigurationException, SAXException {
         NewsState curState = new NewsState(session);
         NewsPack newsPack = newsWire.getNextPack(curState, newsStorage);
-        model.addAttribute(newsPack);
+        model.addAttribute("delays", newsPack.getDelays());
+        model.addAttribute("order", newsPack.getOrder());
+        model.addAttribute("news", newsPack.getNews());
         return "jsonTemplate";
     }
 }
