@@ -20,7 +20,7 @@ import agregator.structure.NewsPack;
 import agregator.structure.NewsState;
 import agregator.utils.NewsParser;
 
-@WebServlet("/")
+//@WebServlet("/")
 public class GetNewsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private NewsWire newsWire;

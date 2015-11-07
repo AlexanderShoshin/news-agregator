@@ -18,7 +18,7 @@ import agregator.structure.NewsPack;
 import agregator.utils.NewsParser;
 import agregator.utils.NewsProcessor;
 
-@WebFilter("/")
+//@WebFilter("/")
 public class CategoryFilter implements Filter {
     private SettingsStorage settingsStorage;
     

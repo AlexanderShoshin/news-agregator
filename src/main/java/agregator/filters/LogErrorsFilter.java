@@ -16,7 +16,7 @@ import org.springframework.context.ApplicationContext;
 import agregator.core.StoragesKeeper;
 import agregator.io.Log;
 
-@WebFilter("/*")
+//@WebFilter("/*")
 public class LogErrorsFilter implements Filter {
     private Log log;
     

@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import agregator.core.StoragesKeeper;
 import agregator.io.Log;
 
-@WebListener
+//@WebListener
 public class Logger implements ServletRequestListener, ServletContextAttributeListener {
     private Log getLog(ServletContext context) {
         ApplicationContext springContext = StoragesKeeper.getSpringContext(context);
