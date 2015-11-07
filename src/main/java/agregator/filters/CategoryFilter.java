@@ -1,53 +1,52 @@
 package agregator.filters;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import agregator.core.StoragesKeeper;
 import agregator.io.SettingsStorage;
+import agregator.structure.NewsItem;
 import agregator.structure.NewsPack;
-import agregator.utils.NewsParser;
 import agregator.utils.NewsProcessor;
 
-//@WebFilter("/")
-public class CategoryFilter implements Filter {
+public class CategoryFilter extends HandlerInterceptorAdapter {
     private SettingsStorage settingsStorage;
     
-	public void destroy() {
-	}
-
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-	    ReadableResponseWrapper wrapper = new ReadableResponseWrapper((HttpServletResponse) response);
-	    chain.doFilter(request, wrapper);
-	    OutputStream out = response.getOutputStream();
-	    out.write(filterOutput(wrapper.getData()).getBytes());
-	    out.close();
-	}
-
-	private String filterOutput(String output) {
-	    NewsPack newsPack;
-	    String filteredCategory;
-	    
-	    if (settingsStorage.getCategoryFilterEnabled()) {
-	        filteredCategory = settingsStorage.getCategoryFilter();
-	        newsPack = NewsParser.jsonToPack(output);
-	        newsPack = NewsProcessor.filterByCategory(newsPack, filteredCategory);
-	        return NewsParser.packToJson(newsPack);
-	    } else {
-	        return output;
-	    }
-	}
-
-	public void init(FilterConfig fConfig) throws ServletException {
-	    settingsStorage = StoragesKeeper.getSettingsStorage(fConfig.getServletContext());
-	}
+    @Autowired
+    public CategoryFilter(ServletContext context) {
+        settingsStorage = StoragesKeeper.getSettingsStorage(context);
+    }
+    
+    @Override
+    public void postHandle(HttpServletRequest request,
+                           HttpServletResponse responce,
+                           Object handler,
+                           ModelAndView modelAndView) throws Exception {
+        String category;
+        
+        if (settingsStorage.getCategoryFilterEnabled()) {
+            category = settingsStorage.getCategoryFilter();
+            filterNewsPack(modelAndView.getModel(), category);
+        }
+    }
+    
+    private void filterNewsPack(Map<String, Object> model, String category) {
+        List<NewsItem> news = (List<NewsItem>) model.get("news");
+        int[] order = (int[]) model.get("order");
+        int[] delays = (int[]) model.get("delays");
+        NewsPack newsPack = new NewsPack(news, order, delays);
+        
+        newsPack = NewsProcessor.filterByCategory(newsPack, category);
+        model.put("news", newsPack.getNews());
+        model.put("order", newsPack.getOrder());
+        model.put("delays", newsPack.getDelays());
+    }
 }
