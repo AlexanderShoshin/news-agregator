@@ -31,10 +31,10 @@ public class AdminController {
         newsStorage = StoragesKeeper.getNewsStorage(context);
     }
     
-    @RequestMapping(value = "/admin-page", params = {"categoryFilterValue", "categoryFilterEnabled"})
+    @RequestMapping(value = "/admin-page", params = {"categoryFilterValue"})
     public String setNewsFilter(Model model,
                                @RequestParam String categoryFilterValue,
-                               @RequestParam String categoryFilterEnabled) throws ParserConfigurationException, SAXException, IOException {
+                               @RequestParam(required = false) String categoryFilterEnabled) throws ParserConfigurationException, SAXException, IOException {
         newsAdmin.changeCategoryFilter(categoryFilterValue, categoryFilterEnabled, settingsStorage);
         return getAdminPage(model);
     }
