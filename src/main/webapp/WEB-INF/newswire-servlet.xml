@@ -3,6 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
@@ -11,9 +12,12 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
         http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util-3.2.xsd">
      
+    <aop:aspectj-autoproxy />
     <mvc:annotation-driven />    
     <context:annotation-config />
     <context:component-scan base-package="agregator" />
@@ -21,14 +25,7 @@
     <bean name="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" />
     <bean name="jsonTemplate" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
     
-    <mvc:interceptors>
-	    <mvc:interceptor>
-	        <mvc:mapping path="/get-news" />
-	        <bean class="agregator.filters.CategoryFilterInterceptor" />
-	    </mvc:interceptor>
-	</mvc:interceptors>
-	
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/WEB-INF/</value>
         </property>
@@ -37,11 +34,18 @@
         </property>
     </bean>
     
+    <mvc:interceptors>
+	    <mvc:interceptor>
+	        <mvc:mapping path="/get-news" />
+	        <bean class="agregator.filters.CategoryFilterInterceptor" />
+	    </mvc:interceptor>
+	</mvc:interceptors>
+	
     <mvc:resources mapping="/resources/**" location="/admin/" />
     
     <util:map id="strategyMap">
         <entry key="LINEAR" value-ref="linearSlider" />
-    </util:map>     
+    </util:map>
             
     <bean id="consoleLogger" class="agregator.io.Log" />
     
@@ -50,5 +54,5 @@
     <bean id="newsWire" class="agregator.core.NewsWire" scope="prototype">
         <constructor-arg name="newsSelector"
                          value="#{strategyMap[T(agregator.io.Config).getSlideStrategy().name()]}" />
-    </bean>    
+    </bean>
 </beans>
