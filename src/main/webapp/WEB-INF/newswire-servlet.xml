@@ -41,7 +41,7 @@
 	    </mvc:interceptor>
 	</mvc:interceptors>
 	
-    <mvc:resources mapping="/resources/**" location="/admin/" />
+    <mvc:resources mapping="/admin/**" location="/admin/" />
     
     <util:map id="strategyMap">
         <entry key="LINEAR" value-ref="linearSlider" />
