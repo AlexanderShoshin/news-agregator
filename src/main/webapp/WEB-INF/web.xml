@@ -6,7 +6,6 @@
     <servlet>
         <servlet-name>newswire</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>newswire</servlet-name>
