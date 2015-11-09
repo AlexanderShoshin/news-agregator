@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,13 @@ import agregator.io.SettingsStorage;
 public class AdminController {
     private NewsAdmin newsAdmin;
     private NewsStorage newsStorage;
+    @Autowired
+    @Qualifier("defaultSettingsStorage")
     private SettingsStorage settingsStorage;
     
     @Autowired
     public AdminController(ServletContext context) {
         newsAdmin = new NewsAdmin();
-        settingsStorage = StoragesKeeper.getSettingsStorage(context);
         newsStorage = StoragesKeeper.getNewsStorage(context);
     }
     

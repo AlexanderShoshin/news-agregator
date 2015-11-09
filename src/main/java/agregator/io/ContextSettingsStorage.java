@@ -2,12 +2,13 @@ package agregator.io;
 
 import javax.servlet.ServletContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component("defaultSettingsStorage")
 public class ContextSettingsStorage implements SettingsStorage {
+    @Autowired
     private ServletContext context;
-    
-    public ContextSettingsStorage(ServletContext context) {
-        this.context = context;
-    }
 
     public void setIsAdminVisited(boolean isVisited) {
         context.setAttribute("isAdminVisited", isVisited);
