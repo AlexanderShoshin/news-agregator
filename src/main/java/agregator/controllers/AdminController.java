@@ -2,7 +2,6 @@ package agregator.controllers;
 
 import java.io.IOException;
 
-import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -15,22 +14,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xml.sax.SAXException;
 
 import agregator.core.NewsAdmin;
-import agregator.core.StoragesKeeper;
 import agregator.io.NewsStorage;
 import agregator.io.SettingsStorage;
 
 @Controller
 public class AdminController {
     private NewsAdmin newsAdmin;
+    @Autowired
+    @Qualifier("defaultNewsStorage")
     private NewsStorage newsStorage;
     @Autowired
     @Qualifier("defaultSettingsStorage")
     private SettingsStorage settingsStorage;
     
-    @Autowired
-    public AdminController(ServletContext context) {
+    public AdminController() {
         newsAdmin = new NewsAdmin();
-        newsStorage = StoragesKeeper.getNewsStorage(context);
     }
     
     @RequestMapping(value = "/admin-page", params = {"categoryFilterValue"})

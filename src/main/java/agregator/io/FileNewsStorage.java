@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,11 +18,13 @@ import org.xml.sax.SAXException;
 
 import agregator.structure.NewsItem;
 
+@Component("defaultNewsStorage")
 public class FileNewsStorage implements NewsStorage {
     private String path;
     
-    public FileNewsStorage(String path) {
-        this.path = path;
+    @Autowired
+    public FileNewsStorage(ServletContext context) {
+        this.path = context.getRealPath("/") + "data";
     }
     
     synchronized public List<NewsItem> parse() throws ParserConfigurationException, SAXException, IOException {
