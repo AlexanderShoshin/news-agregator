@@ -17,11 +17,11 @@ import agregator.structure.NewsItem;
 import agregator.structure.NewsPack;
 import agregator.utils.NewsProcessor;
 
-public class NewsFilter extends HandlerInterceptorAdapter {
+public class NewsInterceptor extends HandlerInterceptorAdapter {
     private SettingsStorage settingsStorage;
     
     @Autowired
-    public NewsFilter(ServletContext context) {
+    public NewsInterceptor(ServletContext context) {
         settingsStorage = StoragesKeeper.getSettingsStorage(context);
     }
     
