@@ -37,7 +37,7 @@
     <mvc:interceptors>
 	    <mvc:interceptor>
 	        <mvc:mapping path="/get-news" />
-	        <bean class="agregator.filters.NewsFilter" />
+	        <bean class="agregator.filters.NewsInterceptor" />
 	    </mvc:interceptor>
 	</mvc:interceptors>
 	
