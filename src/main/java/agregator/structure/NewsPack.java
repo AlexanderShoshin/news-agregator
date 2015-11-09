@@ -1,6 +1,7 @@
 package agregator.structure;
 
 import java.util.List;
+import java.util.Map;
 
 public class NewsPack {
     private int[] displayOrder;
@@ -11,6 +12,12 @@ public class NewsPack {
         this.displayOrder = order;
         this.delays = delays;
         this.news = news;
+    }
+    
+    public NewsPack(Map<String, Object> newsModel) {
+        this.displayOrder = (int[]) newsModel.get("order");
+        this.delays = (int[]) newsModel.get("delays");
+        this.news = (List<NewsItem>) newsModel.get("news");
     }
     
     public int[] getOrder() {
