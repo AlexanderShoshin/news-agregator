@@ -16,7 +16,7 @@
         http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
         http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util-3.2.xsd">
-     <import resource="security.xml" />
+    <import resource="security.xml" />
      
     <aop:aspectj-autoproxy />
     <mvc:annotation-driven />    
